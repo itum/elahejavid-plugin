@@ -245,7 +245,9 @@
 }
 
 .oa-modal.show {
-    display: block;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes fadeIn {
@@ -531,27 +533,3 @@
     }
 }
 
-/* استایل لودینگ */
-.oa-loading {
-    text-align: center;
-    padding: 40px;
-    color: #666;
-    font-size: 16px;
-}
-
-.oa-loading::before {
-    content: '';
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #0073aa;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin-left: 10px;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}

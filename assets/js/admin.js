@@ -28,16 +28,20 @@ jQuery(document).ready(function($) {
         // دکمه‌های حذف و ویرایش (delegated events)
         $(document).on('click', '.oa-btn-delete', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             const id = $(this).data('id');
             const type = $(this).data('type');
             const name = $(this).data('name');
+            console.log('Delete button clicked:', id, type, name);
             confirmDelete(id, type, name);
         });
         
         $(document).on('click', '.oa-btn-edit', function(e) {
             e.preventDefault();
+            e.stopPropagation();
             const id = $(this).data('id');
             const type = $(this).data('type');
+            console.log('Edit button clicked:', id, type);
             openEditModal(id, type);
         });
         
@@ -208,7 +212,7 @@ jQuery(document).ready(function($) {
             html += '<td>' + group.display_order + '</td>';
             html += '<td class="oa-actions">';
             html += '<button class="oa-btn oa-btn-warning oa-btn-small oa-btn-edit" data-id="' + group.id + '" data-type="group">ویرایش</button>';
-            html += '<button class="oa-btn oa-btn-danger oa-btn-small oa-btn-delete" data-id="' + group.id + '" data-type="group">حذف</button>';
+            html += '<button class="oa-btn oa-btn-danger oa-btn-small oa-btn-delete" data-id="' + group.id + '" data-type="group" data-name="' + escapeHtml(group.name) + '">حذف</button>';
             html += '</td>';
             html += '</tr>';
         });
@@ -232,7 +236,7 @@ jQuery(document).ready(function($) {
             html += '<td>' + question.display_order + '</td>';
             html += '<td class="oa-actions">';
             html += '<button class="oa-btn oa-btn-warning oa-btn-small oa-btn-edit" data-id="' + question.id + '" data-type="question">ویرایش</button>';
-            html += '<button class="oa-btn oa-btn-danger oa-btn-small oa-btn-delete" data-id="' + question.id + '" data-type="question">حذف</button>';
+            html += '<button class="oa-btn oa-btn-danger oa-btn-small oa-btn-delete" data-id="' + question.id + '" data-type="question" data-name="' + escapeHtml(question.question_text.substring(0, 30) + '...') + '">حذف</button>';
             html += '</td>';
             html += '</tr>';
         });
@@ -344,7 +348,7 @@ jQuery(document).ready(function($) {
         const message = `شما در حال حذف ${typeName} زیر هستید:\n\n"${itemName}"\n\nاین ${typeName} به طور کامل حذف خواهد شد و قابل بازگردانی نیست.`;
         
         $('#delete-item-info').text(message);
-        $('#delete-modal').addClass('show');
+        $('#delete-modal').show().addClass('show');
     }
     
     // بستن مودال حذف
@@ -353,7 +357,7 @@ jQuery(document).ready(function($) {
         
         // پاک کردن بعد از انیمیشن
         setTimeout(function() {
-            $('#delete-modal').hide();
+            $('#delete-modal').hide().removeClass('show');
             deleteItem = null;
         }, 300);
     }
@@ -398,18 +402,22 @@ jQuery(document).ready(function($) {
     
     // باز کردن مودال ویرایش
     function openEditModal(id, type) {
+        console.log('Opening edit modal for:', id, type);
+        
         // جلوگیری از کلیک‌های مکرر
-        if (isModalOpening) return;
+        if (isModalOpening) {
+            console.log('Modal is already opening, ignoring click');
+            return;
+        }
         isModalOpening = true;
         
         // نمایش مودال فوراً با انیمیشن
-        $('#edit-modal').addClass('show');
+        const $editModal = $('#edit-modal');
+        $editModal.show().addClass('show');
         
-        // نمایش لودینگ فقط یک بار
+        // نمایش لودینگ
         const $modal = $('#edit-modal');
-        if ($modal.find('#edit-form').html().trim() === '') {
-            $modal.find('#edit-form').html('<div class="oa-loading">در حال بارگذاری...</div>');
-        }
+        $modal.find('#edit-form').html('<div class="oa-loading">در حال بارگذاری...</div>');
         
         $.ajax({
             url: oa_admin_ajax.ajax_url,
@@ -420,15 +428,17 @@ jQuery(document).ready(function($) {
                 nonce: oa_admin_ajax.nonce
             },
             success: function(response) {
+                console.log('Edit data response:', response);
                 if (response.success) {
                     populateEditModal(response.data, type);
                 } else {
-                    $modal.find('#edit-form').html('<div class="oa-alert oa-alert-danger">خطا در بارگذاری اطلاعات</div>');
+                    $modal.find('#edit-form').html('<div class="oa-alert oa-alert-danger">خطا در بارگذاری اطلاعات: ' + (response.data.message || 'نامشخص') + '</div>');
                 }
                 isModalOpening = false;
             },
-            error: function() {
-                $modal.find('#edit-form').html('<div class="oa-alert oa-alert-danger">خطا در ارتباط با سرور</div>');
+            error: function(xhr, status, error) {
+                console.error('Error loading edit data:', xhr, status, error);
+                $modal.find('#edit-form').html('<div class="oa-alert oa-alert-danger">خطا در ارتباط با سرور: ' + error + '</div>');
                 isModalOpening = false;
             }
         });
@@ -436,7 +446,10 @@ jQuery(document).ready(function($) {
     
     // پر کردن مودال ویرایش
     function populateEditModal(data, type) {
+        console.log('Populating edit modal with data:', data, 'type:', type);
+        
         const $modal = $('.oa-modal');
+        const $form = $modal.find('#edit-form');
         let formHtml = '';
         
         if (type === 'group') {
@@ -444,7 +457,7 @@ jQuery(document).ready(function($) {
                 <div class="oa-form-row">
                     <div class="oa-form-group">
                         <label for="edit_group_name">نام گروه:</label>
-                        <input type="text" id="edit_group_name" name="name" value="${data.name}" required>
+                        <input type="text" id="edit_group_name" name="name" value="${escapeHtml(data.name)}" required>
                     </div>
                     <div class="oa-form-group">
                         <label for="edit_group_order">ترتیب نمایش:</label>
@@ -454,17 +467,17 @@ jQuery(document).ready(function($) {
                 
                 <div class="oa-form-group">
                     <label for="edit_group_description">توضیحات:</label>
-                    <textarea id="edit_group_description" name="description" rows="3">${data.description || ''}</textarea>
+                    <textarea id="edit_group_description" name="description" rows="3">${escapeHtml(data.description || '')}</textarea>
                 </div>
                 
                 <div class="oa-form-group">
                     <label for="edit_group_tips">توصیه‌ها:</label>
-                    <textarea id="edit_group_tips" name="tips" rows="3">${data.tips || ''}</textarea>
+                    <textarea id="edit_group_tips" name="tips" rows="3">${escapeHtml(data.tips || '')}</textarea>
                 </div>
                 
                 <div class="oa-form-group">
                     <label for="edit_group_video">لینک ویدیو:</label>
-                    <input type="url" id="edit_group_video" name="video_url" value="${data.video_url || ''}" placeholder="https://example.com/video.mp4">
+                    <input type="url" id="edit_group_video" name="video_url" value="${escapeHtml(data.video_url || '')}" placeholder="https://example.com/video.mp4">
                 </div>
                 
                 <button type="submit" class="oa-btn oa-btn-primary">ذخیره تغییرات</button>
@@ -487,7 +500,7 @@ jQuery(document).ready(function($) {
                 
                 <div class="oa-form-group">
                     <label for="edit_question_text">متن سوال:</label>
-                    <textarea id="edit_question_text" name="question_text" rows="3" required>${data.question_text}</textarea>
+                    <textarea id="edit_question_text" name="question_text" rows="3" required>${escapeHtml(data.question_text)}</textarea>
                 </div>
                 
                 <div class="oa-question-group">
@@ -499,23 +512,57 @@ jQuery(document).ready(function($) {
             `;
         }
         
-        $modal.find('#edit-form').html(formHtml);
-        $modal.find('#edit-form').data('edit-id', data.id);
-        $modal.find('#edit-form').data('edit-type', type);
+        $form.html(formHtml);
+        $form.data('edit-id', data.id);
+        $form.data('edit-type', type);
+        
+        console.log('Edit modal populated successfully');
+    }
+    
+    // تابع escape برای HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
     
     // دریافت گزینه‌های گروه برای select
     function getGroupOptions(selectedId) {
         let options = '';
-        // گروه‌ها را از جدول موجود دریافت می‌کنیم
-        $('.oa-tab-content[data-tab="groups"] select option').each(function() {
-            const value = $(this).val();
-            const text = $(this).text();
-            if (value && value !== '') {
-                const selected = value == selectedId ? 'selected' : '';
-                options += `<option value="${value}" ${selected}>${text}</option>`;
-            }
-        });
+        
+        // اگر گروه‌ها در DOM موجود نیستند، از AJAX دریافت کنیم
+        const $existingOptions = $('.oa-tab-content[data-tab="groups"] select option');
+        if ($existingOptions.length === 0) {
+            // بارگذاری گروه‌ها از سرور
+            $.ajax({
+                url: oa_admin_ajax.ajax_url,
+                type: 'POST',
+                data: {
+                    action: 'oa_get_groups',
+                    nonce: oa_admin_ajax.nonce
+                },
+                async: false, // Synchronous برای اطمینان از بارگذاری
+                success: function(response) {
+                    if (response.success) {
+                        response.data.forEach(function(group) {
+                            const selected = group.id == selectedId ? 'selected' : '';
+                            options += `<option value="${group.id}" ${selected}>${escapeHtml(group.name)}</option>`;
+                        });
+                    }
+                }
+            });
+        } else {
+            // استفاده از گروه‌های موجود در DOM
+            $existingOptions.each(function() {
+                const value = $(this).val();
+                const text = $(this).text();
+                if (value && value !== '') {
+                    const selected = value == selectedId ? 'selected' : '';
+                    options += `<option value="${value}" ${selected}>${escapeHtml(text)}</option>`;
+                }
+            });
+        }
+        
         return options;
     }
     
@@ -527,7 +574,7 @@ jQuery(document).ready(function($) {
             html += `
                 <div class="oa-option-item">
                     <label>گزینه ${i + 1}:</label>
-                    <input type="text" name="options[${i}][text]" value="${option.option_text}" placeholder="متن گزینه" required>
+                    <input type="text" name="options[${i}][text]" value="${escapeHtml(option.option_text)}" placeholder="متن گزینه" required>
                     <input type="number" name="options[${i}][score]" class="oa-score-input" value="${option.score}" min="0" max="3" required>
                 </div>
             `;
@@ -537,17 +584,30 @@ jQuery(document).ready(function($) {
     
     // بستن مودال
     function closeModal() {
+        console.log('Closing modal');
+        
         $('#edit-modal').removeClass('show');
         $('#delete-modal').removeClass('show');
         
         // پاک کردن فرم بعد از انیمیشن
         setTimeout(function() {
-            $('#edit-modal').hide();
-            $('#delete-modal').hide();
-            $('.oa-modal form')[0].reset();
-            $('.oa-modal form').removeData('edit-id edit-type');
+            const $editModal = $('#edit-modal');
+            const $deleteModal = $('#delete-modal');
+            
+            $editModal.hide().removeClass('show');
+            $deleteModal.hide().removeClass('show');
+            
+            // Reset forms
+            const $editForm = $('#edit-form');
+            if ($editForm.length) {
+                $editForm[0].reset();
+                $editForm.removeData('edit-id edit-type');
+                $editForm.empty(); // Clear form content
+            }
+            
             deleteItem = null;
             isModalOpening = false; // بازنشانی فلگ
+            console.log('Modal closed and reset');
         }, 300);
     }
     
