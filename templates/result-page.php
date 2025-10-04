@@ -128,42 +128,77 @@ $total_score = array_sum($result['group_scores']);
                 $score = isset($result['group_scores'][$group->id]) ? $result['group_scores'][$group->id] : 0;
                 $is_winner = in_array($group->id, $result['winning_groups']);
             ?>
-            <div class="oa-score-item" style="<?php echo $is_winner ? 'background: #e8f5e8; font-weight: bold;' : ''; ?>">
+            <div class="oa-score-item <?php echo $is_winner ? 'winner' : ''; ?>">
                 <span class="oa-score-name"><?php echo esc_html($group->name); ?></span>
                 <span class="oa-score-value"><?php echo $score; ?> / 12</span>
             </div>
             <?php endforeach; ?>
             
-            <div class="oa-score-item" style="border-top: 2px solid #667eea; margin-top: 15px; padding-top: 15px;">
-                <span class="oa-score-name" style="font-size: 16px;">امتیاز کل</span>
-                <span class="oa-score-value" style="font-size: 16px;"><?php echo $total_score; ?> / 108</span>
+            <div class="oa-score-item" style="border-top: 3px solid #667eea; margin-top: 20px; padding-top: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-size: 18px; font-weight: bold;">
+                <span class="oa-score-name">امتیاز کل</span>
+                <span class="oa-score-value"><?php echo $total_score; ?> / 108</span>
             </div>
         </div>
         
-        <div class="oa-retake-btn">
-            <a href="<?php echo home_url(); ?>" class="oa-btn oa-btn-primary oa-btn-large">
-                تکرار تست
+        <div class="oa-navigation-buttons">
+            <a href="<?php echo home_url(); ?>" class="oa-btn oa-btn-secondary">
+                🏠 بازگشت به خانه
+            </a>
+            <a href="<?php echo home_url('/تست-چاقی/'); ?>" class="oa-btn oa-btn-primary oa-btn-large">
+                🔄 تکرار تست
             </a>
         </div>
     </div>
 </div>
 
 <style>
-/* استایل‌های اضافی برای صفحه نتیجه */
+/* استایل‌های بهبود یافته برای صفحه نتیجه */
 .oa-result-container {
     min-height: 100vh;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-    padding: 20px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px 20px;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+}
+
+.oa-result-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 40px 30px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #333;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
+}
+
+.oa-result-title {
+    font-size: 32px;
+    margin: 0 0 15px 0;
+    font-weight: bold;
+    color: #333;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.oa-result-subtitle {
+    font-size: 18px;
+    margin: 0;
+    color: #666;
+    line-height: 1.6;
 }
 
 .oa-result-content {
+    background: rgba(255, 255, 255, 0.95);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    backdrop-filter: blur(10px);
     animation: fadeInUp 0.8s ease-out;
 }
 
 @keyframes fadeInUp {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(50px);
     }
     to {
         opacity: 1;
@@ -171,12 +206,206 @@ $total_score = array_sum($result['group_scores']);
     }
 }
 
-.oa-video-wrapper {
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    border-radius: 12px;
-    overflow: hidden;
+.oa-group-info {
+    margin-bottom: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    border-right: 5px solid #667eea;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    animation: slideInRight 0.6s ease-out;
 }
 
+.oa-group-name {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 15px 0;
+    text-align: center;
+}
+
+.oa-group-description {
+    font-size: 18px;
+    color: #666;
+    margin: 0 0 20px 0;
+    line-height: 1.8;
+    text-align: center;
+}
+
+.oa-group-tips {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    padding: 25px;
+    border-radius: 12px;
+    border-right: 4px solid #2196f3;
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+}
+
+.oa-group-tips h4 {
+    margin: 0 0 15px 0;
+    color: #1976d2;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.oa-group-tips p {
+    margin: 0;
+    color: #333;
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+/* بهینه‌سازی ویدیو */
+.oa-video-container {
+    margin: 40px 0;
+    text-align: center;
+}
+
+.oa-video-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 0 25px 0;
+    color: #333;
+    text-align: center;
+}
+
+.oa-video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    transition: transform 0.3s ease;
+}
+
+.oa-video-wrapper:hover {
+    transform: scale(1.02);
+}
+
+.oa-video-wrapper video {
+    width: 100%;
+    height: auto;
+    min-height: 400px;
+    display: block;
+    border-radius: 15px;
+}
+
+/* بهبود جزئیات امتیازات */
+.oa-score-breakdown {
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.oa-score-breakdown h4 {
+    margin: 0 0 25px 0;
+    color: #333;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.oa-score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    background: white;
+    border-radius: 10px;
+    border-right: 4px solid #e9ecef;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.oa-score-item:hover {
+    background: #f8f9fa;
+    transform: translateX(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.oa-score-item.winner {
+    background: linear-gradient(135deg, #e8f5e8 0%, #d4edda 100%);
+    border-right-color: #28a745;
+    font-weight: bold;
+}
+
+.oa-score-name {
+    font-weight: 500;
+    color: #333;
+    font-size: 16px;
+}
+
+.oa-score-value {
+    font-weight: bold;
+    color: #667eea;
+    font-size: 16px;
+}
+
+.oa-score-item.winner .oa-score-value {
+    color: #28a745;
+}
+
+/* دکمه‌های ناوبری بهبود یافته */
+.oa-navigation-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    padding: 30px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+}
+
+.oa-btn {
+    padding: 15px 30px;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    min-width: 150px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.oa-btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.oa-btn-primary:hover {
+    background: linear-gradient(135deg, #5a6fd8 0%, #6a4c93 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.oa-btn-secondary {
+    background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+    color: white;
+}
+
+.oa-btn-secondary:hover {
+    background: linear-gradient(135deg, #5a6268 0%, #343a40 100%);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.oa-btn-large {
+    padding: 18px 40px;
+    font-size: 18px;
+    min-width: 200px;
+}
+
+/* انیمیشن‌های اضافی */
 .oa-group-info {
     animation: slideInRight 0.6s ease-out;
 }
@@ -184,7 +413,7 @@ $total_score = array_sum($result['group_scores']);
 @keyframes slideInRight {
     from {
         opacity: 0;
-        transform: translateX(30px);
+        transform: translateX(50px);
     }
     to {
         opacity: 1;
@@ -192,12 +421,100 @@ $total_score = array_sum($result['group_scores']);
     }
 }
 
-.oa-score-item {
-    transition: all 0.3s ease;
+.oa-video-container {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
 }
 
-.oa-score-item:hover {
-    background: #f8f9fa;
-    transform: translateX(-5px);
+.oa-score-breakdown {
+    animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.oa-navigation-buttons {
+    animation: fadeInUp 0.8s ease-out 0.6s both;
+}
+
+/* ریسپانسیو */
+@media (max-width: 768px) {
+    .oa-result-container {
+        padding: 20px 10px;
+    }
+    
+    .oa-result-header {
+        padding: 30px 20px;
+        margin-bottom: 30px;
+    }
+    
+    .oa-result-title {
+        font-size: 24px;
+    }
+    
+    .oa-result-subtitle {
+        font-size: 16px;
+    }
+    
+    .oa-result-content {
+        padding: 25px 20px;
+    }
+    
+    .oa-group-info {
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .oa-group-name {
+        font-size: 22px;
+    }
+    
+    .oa-group-description {
+        font-size: 16px;
+    }
+    
+    .oa-video-wrapper {
+        max-width: 100%;
+    }
+    
+    .oa-video-wrapper video {
+        min-height: 250px;
+    }
+    
+    .oa-navigation-buttons {
+        flex-direction: column;
+        gap: 15px;
+        padding: 25px 20px;
+    }
+    
+    .oa-btn {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .oa-score-breakdown {
+        padding: 20px;
+    }
+    
+    .oa-score-item {
+        padding: 12px 15px;
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .oa-result-title {
+        font-size: 20px;
+    }
+    
+    .oa-group-name {
+        font-size: 18px;
+    }
+    
+    .oa-video-title {
+        font-size: 18px;
+    }
+    
+    .oa-video-wrapper video {
+        min-height: 200px;
+    }
 }
 </style>
