@@ -168,6 +168,8 @@ $total_score = array_sum($result['group_scores']);
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 30px 15px;
     font-family: 'Inter', 'Tahoma', 'Arial', sans-serif;
+    direction: rtl;
+    text-align: right;
 }
 
 .oa-result-header {
@@ -264,7 +266,7 @@ $total_score = array_sum($result['group_scores']);
     font-size: 16px;
 }
 
-/* بهینه‌سازی ویدیو - مربعی */
+/* بهینه‌سازی ویدیو - ریسپانسیو */
 .oa-video-container {
     margin: 25px 0;
     text-align: center;
@@ -288,7 +290,7 @@ $total_score = array_sum($result['group_scores']);
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     transition: transform 0.3s ease;
-    aspect-ratio: 1/1; /* مربعی */
+    aspect-ratio: 16/9; /* نسبت استاندارد ویدیو */
 }
 
 .oa-video-wrapper:hover {
@@ -298,7 +300,7 @@ $total_score = array_sum($result['group_scores']);
 .oa-video-wrapper video {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* نمایش کامل ویدیو */
     display: block;
     border-radius: 12px;
 }
@@ -361,7 +363,7 @@ $total_score = array_sum($result['group_scores']);
     color: #28a745;
 }
 
-/* دکمه‌های ناوبری بهبود یافته */
+/* دکمه‌های ناوبری بهبود یافته و ریسپانسیو */
 .oa-navigation-buttons {
     display: flex;
     justify-content: center;
@@ -371,6 +373,7 @@ $total_score = array_sum($result['group_scores']);
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    flex-wrap: wrap;
 }
 
 .oa-btn {
@@ -386,6 +389,8 @@ $total_score = array_sum($result['group_scores']);
     text-align: center;
     min-width: 150px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    flex: 1;
+    max-width: 250px;
 }
 
 .oa-btn-primary {
@@ -444,89 +449,315 @@ $total_score = array_sum($result['group_scores']);
     animation: fadeInUp 0.8s ease-out 0.6s both;
 }
 
-/* ریسپانسیو */
+/* ریسپانسیو بهبود یافته */
+@media (max-width: 1024px) {
+    .oa-result-container {
+        padding: 25px 15px;
+    }
+    
+    .oa-video-wrapper {
+        max-width: 450px;
+    }
+    
+    .oa-navigation-buttons {
+        flex-direction: row;
+        gap: 20px;
+    }
+    
+    .oa-btn {
+        flex: 1;
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 900px) {
+    .oa-result-container {
+        padding: 20px 12px;
+    }
+    
+    .oa-result-content {
+        padding: 20px 15px;
+    }
+    
+    .oa-group-info {
+        padding: 18px 15px;
+    }
+    
+    .oa-video-wrapper {
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .oa-result-container {
         padding: 20px 10px;
     }
     
     .oa-result-header {
-        padding: 30px 20px;
-        margin-bottom: 30px;
+        padding: 25px 15px;
+        margin-bottom: 25px;
     }
     
     .oa-result-title {
-        font-size: 24px;
+        font-size: 22px;
+        line-height: 1.3;
     }
     
     .oa-result-subtitle {
-        font-size: 16px;
+        font-size: 15px;
+        line-height: 1.4;
     }
     
     .oa-result-content {
-        padding: 25px 20px;
+        padding: 20px 15px;
     }
     
     .oa-group-info {
-        padding: 20px;
-        margin-bottom: 30px;
+        padding: 18px 15px;
+        margin-bottom: 25px;
     }
     
     .oa-group-name {
-        font-size: 22px;
+        font-size: 20px;
+        line-height: 1.3;
     }
     
     .oa-group-description {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    
+    .oa-group-tips {
+        padding: 20px 15px;
+    }
+    
+    .oa-group-tips h4 {
         font-size: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .oa-group-tips p {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+    
+    .oa-video-container {
+        margin: 20px 0;
+    }
+    
+    .oa-video-title {
+        font-size: 18px;
+        margin-bottom: 15px;
     }
     
     .oa-video-wrapper {
         max-width: 100%;
-        aspect-ratio: 1/1;
+        aspect-ratio: 16/9; /* تغییر از مربعی به مستطیل */
+        margin: 0 auto;
     }
     
     .oa-video-wrapper video {
+        width: 100%;
         height: 100%;
+        object-fit: contain; /* تغییر از cover به contain */
+    }
+    
+    .oa-score-breakdown {
+        padding: 18px 15px;
+        margin-top: 20px;
+    }
+    
+    .oa-score-breakdown h4 {
+        font-size: 18px;
+        margin-bottom: 20px;
+    }
+    
+    .oa-score-item {
+        padding: 12px 15px;
+        margin-bottom: 8px;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .oa-score-name {
+        font-size: 14px;
+        flex: 1;
+        margin-left: 10px;
+    }
+    
+    .oa-score-value {
+        font-size: 14px;
+        font-weight: bold;
     }
     
     .oa-navigation-buttons {
         flex-direction: column;
-        gap: 15px;
-        padding: 25px 20px;
+        gap: 12px;
+        padding: 20px 15px;
+        margin-top: 20px;
     }
     
     .oa-btn {
         width: 100%;
         min-width: auto;
+        padding: 14px 25px;
+        font-size: 15px;
     }
     
-    .oa-score-breakdown {
-        padding: 20px;
-    }
-    
-    .oa-score-item {
-        padding: 12px 15px;
-        flex-direction: column;
-        gap: 5px;
-        text-align: center;
+    .oa-btn-large {
+        padding: 16px 30px;
+        font-size: 16px;
     }
 }
 
 @media (max-width: 480px) {
+    .oa-result-container {
+        padding: 15px 8px;
+    }
+    
+    .oa-result-header {
+        padding: 20px 12px;
+        margin-bottom: 20px;
+    }
+    
     .oa-result-title {
-        font-size: 20px;
+        font-size: 18px;
+        line-height: 1.2;
+    }
+    
+    .oa-result-subtitle {
+        font-size: 14px;
+        line-height: 1.3;
+    }
+    
+    .oa-result-content {
+        padding: 15px 12px;
+    }
+    
+    .oa-group-info {
+        padding: 15px 12px;
+        margin-bottom: 20px;
     }
     
     .oa-group-name {
-        font-size: 18px;
+        font-size: 16px;
+        line-height: 1.2;
+    }
+    
+    .oa-group-description {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+    
+    .oa-group-tips {
+        padding: 15px 12px;
+    }
+    
+    .oa-group-tips h4 {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+    
+    .oa-group-tips p {
+        font-size: 13px;
+        line-height: 1.5;
     }
     
     .oa-video-title {
-        font-size: 18px;
+        font-size: 16px;
+        margin-bottom: 12px;
     }
     
-    .oa-video-wrapper video {
-        min-height: 200px;
+    .oa-video-wrapper {
+        aspect-ratio: 4/3; /* نسبت مناسب‌تر برای موبایل */
+    }
+    
+    .oa-score-breakdown {
+        padding: 15px 12px;
+    }
+    
+    .oa-score-breakdown h4 {
+        font-size: 16px;
+        margin-bottom: 15px;
+    }
+    
+    .oa-score-item {
+        padding: 10px 12px;
+        margin-bottom: 6px;
+        font-size: 13px;
+    }
+    
+    .oa-score-name {
+        font-size: 13px;
+    }
+    
+    .oa-score-value {
+        font-size: 13px;
+    }
+    
+    .oa-navigation-buttons {
+        padding: 15px 12px;
+        gap: 10px;
+    }
+    
+    .oa-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    .oa-btn-large {
+        padding: 14px 25px;
+        font-size: 15px;
+    }
+}
+
+/* برای صفحات بسیار کوچک */
+@media (max-width: 360px) {
+    .oa-result-container {
+        padding: 10px 5px;
+    }
+    
+    .oa-result-header {
+        padding: 15px 10px;
+    }
+    
+    .oa-result-title {
+        font-size: 16px;
+    }
+    
+    .oa-result-subtitle {
+        font-size: 13px;
+    }
+    
+    .oa-result-content {
+        padding: 12px 8px;
+    }
+    
+    .oa-group-info {
+        padding: 12px 8px;
+    }
+    
+    .oa-group-name {
+        font-size: 15px;
+    }
+    
+    .oa-group-description {
+        font-size: 13px;
+    }
+    
+    .oa-video-wrapper {
+        aspect-ratio: 1/1; /* مربعی برای صفحات خیلی کوچک */
+    }
+    
+    .oa-score-item {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+    
+    .oa-btn {
+        padding: 10px 15px;
+        font-size: 13px;
     }
 }
 </style>

@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.8
+ * Version: 1.0.17
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -49,6 +49,7 @@ class ObesityAssessment {
         // ثبت شورت‌کد
         add_shortcode('oa_quiz', array($this, 'quiz_shortcode'));
         add_shortcode('obesity_assessment', array($this, 'quiz_shortcode'));
+        add_shortcode('oa_quiz_all', array($this, 'quiz_all_shortcode'));
         add_shortcode('oa_flush_rules', array($this, 'flush_rules_shortcode'));
         
         // اضافه کردن منوی سایت
@@ -696,6 +697,17 @@ class ObesityAssessment {
         return ob_get_clean();
     }
     
+    public function quiz_all_shortcode($atts) {
+        try {
+            ob_start();
+            include OA_PLUGIN_PATH . 'templates/quiz-form-all.php';
+            $content = ob_get_clean();
+            return $content;
+        } catch (Exception $e) {
+            return '<p>خطا در بارگذاری فرم تست. لطفاً دوباره تلاش کنید.</p>';
+        }
+    }
+    
     public function add_menu_item($items, $args) {
         if ($args->theme_location == 'primary') {
             $result_page_url = home_url('/oa-result/');
@@ -717,6 +729,11 @@ class ObesityAssessment {
     
     public function template_redirect() {
         if (get_query_var('oa_result')) {
+            // پردازش فرم اگر از فرم همه سوالات ارسال شده
+            if (isset($_POST['oa_submit_all']) && $_POST['oa_submit_all'] == '1') {
+                $this->process_all_questions_form();
+            }
+            
             // بررسی وجود session
             if (!session_id()) {
                 session_start();
@@ -733,6 +750,86 @@ class ObesityAssessment {
         }
     }
     
+    private function process_all_questions_form() {
+        check_ajax_referer('oa_quiz_nonce', 'nonce');
+        
+        global $wpdb;
+        
+        $answers = $_POST['answers'];
+        $group_scores = array();
+        
+        // محاسبه امتیاز هر گروه
+        for ($group_id = 1; $group_id <= 9; $group_id++) {
+            $group_score = 0;
+            
+            // دریافت سوالات این گروه
+            $group_questions = $wpdb->get_results($wpdb->prepare("
+                SELECT id FROM {$wpdb->prefix}oa_questions 
+                WHERE group_id = %d 
+                ORDER BY display_order
+            ", $group_id));
+            
+            foreach ($group_questions as $question) {
+                if (isset($answers[$question->id])) {
+                    $option_index = intval($answers[$question->id]);
+                    // دریافت امتیاز گزینه انتخاب شده
+                    $option_score = $wpdb->get_var($wpdb->prepare("
+                        SELECT score FROM {$wpdb->prefix}oa_options 
+                        WHERE question_id = %d AND display_order = %d
+                    ", $question->id, $option_index + 1));
+                    
+                    if ($option_score !== null) {
+                        $group_score += intval($option_score);
+                    }
+                }
+            }
+            $group_scores[$group_id] = $group_score;
+        }
+        
+        // پیدا کردن گروه‌های برنده
+        $winning_groups = array();
+        $max_score = max($group_scores);
+        
+        if ($max_score == 12) {
+            // گروه‌هایی که امتیاز کامل دارند
+            foreach ($group_scores as $group_id => $score) {
+                if ($score == 12) {
+                    $winning_groups[] = $group_id;
+                }
+            }
+        } else {
+            // گروه‌هایی که بیشترین امتیاز را دارند
+            foreach ($group_scores as $group_id => $score) {
+                if ($score == $max_score) {
+                    $winning_groups[] = $group_id;
+                }
+            }
+        }
+        
+        // ذخیره نتیجه
+        $session_id = session_id();
+        if (empty($session_id)) {
+            session_start();
+            $session_id = session_id();
+        }
+        
+        $wpdb->insert(
+            $wpdb->prefix . 'oa_results',
+            array(
+                'user_id' => get_current_user_id(),
+                'session_id' => $session_id,
+                'group_scores' => json_encode($group_scores),
+                'winning_groups' => json_encode($winning_groups)
+            )
+        );
+        
+        // ذخیره در session
+        $_SESSION['oa_result'] = array(
+            'group_scores' => $group_scores,
+            'winning_groups' => $winning_groups
+        );
+    }
+    
     public function submit_quiz() {
         check_ajax_referer('oa_quiz_nonce', 'nonce');
         
@@ -744,10 +841,26 @@ class ObesityAssessment {
         // محاسبه امتیاز هر گروه
         for ($group_id = 1; $group_id <= 9; $group_id++) {
             $group_score = 0;
-            for ($q = 1; $q <= 4; $q++) {
-                $question_index = ($group_id - 1) * 4 + $q - 1;
-                if (isset($answers[$question_index])) {
-                    $group_score += intval($answers[$question_index]);
+            
+            // دریافت سوالات این گروه
+            $group_questions = $wpdb->get_results($wpdb->prepare("
+                SELECT id FROM {$wpdb->prefix}oa_questions 
+                WHERE group_id = %d 
+                ORDER BY display_order
+            ", $group_id));
+            
+            foreach ($group_questions as $question) {
+                if (isset($answers[$question->id])) {
+                    $option_index = intval($answers[$question->id]);
+                    // دریافت امتیاز گزینه انتخاب شده
+                    $option_score = $wpdb->get_var($wpdb->prepare("
+                        SELECT score FROM {$wpdb->prefix}oa_options 
+                        WHERE question_id = %d AND display_order = %d
+                    ", $question->id, $option_index + 1));
+                    
+                    if ($option_score !== null) {
+                        $group_score += intval($option_score);
+                    }
                 }
             }
             $group_scores[$group_id] = $group_score;

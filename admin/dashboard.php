@@ -185,12 +185,34 @@ $recent_results = $wpdb->get_results("
             <h3>راهنمای استفاده از شورت کدها</h3>
             
             <div class="oa-help-section">
-                <h4>🎯 شورت کد اصلی</h4>
-                <div class="oa-code-block">
-                    <code>[obesity_assessment]</code>
-                    <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[obesity_assessment]">کپی</button>
+                <h4>🎯 شورت کدهای اصلی</h4>
+                
+                <div class="oa-shortcode-group">
+                    <h5>نمایش مرحله‌ای (پیش‌فرض)</h5>
+                    <div class="oa-code-block">
+                        <code>[oa_quiz]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[oa_quiz]">کپی</button>
+                    </div>
+                    <p>سوالات یکی یکی نمایش داده می‌شوند با نوار پیشرفت و دکمه‌های قبلی/بعدی</p>
                 </div>
-                <p>این شورت کد فرم تست تشخیص نوع چاقی را نمایش می‌دهد. کاربران می‌توانند با پاسخ دادن به سوالات، نوع چاقی خود را تشخیص دهند.</p>
+                
+                <div class="oa-shortcode-group">
+                    <h5>نمایش همه سوالات در یک صفحه</h5>
+                    <div class="oa-code-block">
+                        <code>[oa_quiz_all]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[oa_quiz_all]">کپی</button>
+                    </div>
+                    <p>تمام 36 سوال در یک صفحه نمایش داده می‌شوند، دسته‌بندی شده بر اساس گروه‌ها</p>
+                </div>
+                
+                <div class="oa-shortcode-group">
+                    <h5>شورت کد قدیمی (سازگاری)</h5>
+                    <div class="oa-code-block">
+                        <code>[obesity_assessment]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[obesity_assessment]">کپی</button>
+                    </div>
+                    <p>معادل <code>[oa_quiz]</code> برای سازگاری با نسخه‌های قدیمی</p>
+                </div>
             </div>
             
             <div class="oa-help-section">
@@ -203,36 +225,29 @@ $recent_results = $wpdb->get_results("
             </div>
             
             <div class="oa-help-section">
-                <h4>⚙️ پارامترهای شورت کد اصلی</h4>
-                <p>شورت کد اصلی از پارامترهای زیر پشتیبانی می‌کند:</p>
+                <h4>🔄 تفاوت بین دو حالت نمایش</h4>
                 
-                <div class="oa-params-grid">
-                    <div class="oa-param-item">
-                        <strong>show_title</strong>
-                        <span class="oa-param-type">boolean</span>
-                        <span class="oa-param-default">true</span>
-                        <p>نمایش عنوان تست (true/false)</p>
+                <div class="oa-comparison-grid">
+                    <div class="oa-comparison-item">
+                        <h5>حالت مرحله‌ای <code>[oa_quiz]</code></h5>
+                        <ul>
+                            <li>✅ تجربه کاربری بهتر</li>
+                            <li>✅ نوار پیشرفت</li>
+                            <li>✅ دکمه‌های قبلی/بعدی</li>
+                            <li>✅ کاهش خستگی کاربر</li>
+                            <li>❌ زمان بیشتر برای تکمیل</li>
+                        </ul>
                     </div>
                     
-                    <div class="oa-param-item">
-                        <strong>show_progress</strong>
-                        <span class="oa-param-type">boolean</span>
-                        <span class="oa-param-default">true</span>
-                        <p>نمایش نوار پیشرفت (true/false)</p>
-                    </div>
-                    
-                    <div class="oa-param-item">
-                        <strong>button_text</strong>
-                        <span class="oa-param-type">string</span>
-                        <span class="oa-param-default">شروع تست</span>
-                        <p>متن دکمه شروع تست</p>
-                    </div>
-                    
-                    <div class="oa-param-item">
-                        <strong>theme</strong>
-                        <span class="oa-param-type">string</span>
-                        <span class="oa-param-default">default</span>
-                        <p>تم نمایش (default, modern, classic)</p>
+                    <div class="oa-comparison-item">
+                        <h5>حالت همه سوالات <code>[oa_quiz_all]</code></h5>
+                        <ul>
+                            <li>✅ سرعت بیشتر</li>
+                            <li>✅ امکان مرور کلی</li>
+                            <li>✅ پاسخ‌دهی یکجا</li>
+                            <li>✅ دسته‌بندی بر اساس گروه‌ها</li>
+                            <li>❌ صفحه طولانی</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -241,35 +256,30 @@ $recent_results = $wpdb->get_results("
                 <h4>📝 مثال‌های استفاده</h4>
                 
                 <div class="oa-example-block">
-                    <h5>استفاده ساده:</h5>
+                    <h5>نمایش مرحله‌ای (پیشنهادی):</h5>
+                    <div class="oa-code-block">
+                        <code>[oa_quiz]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[oa_quiz]">کپی</button>
+                    </div>
+                    <p>مناسب برای تجربه کاربری بهتر و کاهش خستگی</p>
+                </div>
+                
+                <div class="oa-example-block">
+                    <h5>نمایش همه سوالات:</h5>
+                    <div class="oa-code-block">
+                        <code>[oa_quiz_all]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[oa_quiz_all]">کپی</button>
+                    </div>
+                    <p>مناسب برای تکمیل سریع و مشاهده کلی همه سوالات</p>
+                </div>
+                
+                <div class="oa-example-block">
+                    <h5>شورت کد قدیمی:</h5>
                     <div class="oa-code-block">
                         <code>[obesity_assessment]</code>
                         <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[obesity_assessment]">کپی</button>
                     </div>
-                </div>
-                
-                <div class="oa-example-block">
-                    <h5>بدون عنوان:</h5>
-                    <div class="oa-code-block">
-                        <code>[obesity_assessment show_title="false"]</code>
-                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy='[obesity_assessment show_title="false"]'>کپی</button>
-                    </div>
-                </div>
-                
-                <div class="oa-example-block">
-                    <h5>با تم مدرن:</h5>
-                    <div class="oa-code-block">
-                        <code>[obesity_assessment theme="modern" button_text="شروع تست جدید"]</code>
-                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy='[obesity_assessment theme="modern" button_text="شروع تست جدید"]'>کپی</button>
-                    </div>
-                </div>
-                
-                <div class="oa-example-block">
-                    <h5>بدون نوار پیشرفت:</h5>
-                    <div class="oa-code-block">
-                        <code>[obesity_assessment show_progress="false"]</code>
-                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy='[obesity_assessment show_progress="false"]'>کپی</button>
-                    </div>
+                    <p>برای سازگاری با نسخه‌های قبلی</p>
                 </div>
             </div>
             
