@@ -6,6 +6,7 @@ jQuery(document).ready(function($) {
     let totalQuestions = 0;
     let answers = [];
     let isSubmitting = false;
+    let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
     // مقداردهی اولیه
     function init() {
@@ -189,8 +190,12 @@ jQuery(document).ready(function($) {
         }, index * 100);
     });
     
-    // انیمیشن انتخاب گزینه
-    $('.oa-option label').on('click', function() {
+    // انیمیشن انتخاب گزینه (بهینه شده برای تاچ)
+    $('.oa-option label').on('click touchstart', function(e) {
+        if (isTouchDevice) {
+            e.preventDefault();
+        }
+        
         $(this).closest('.oa-option').addClass('selected');
         
         setTimeout(() => {
@@ -198,11 +203,27 @@ jQuery(document).ready(function($) {
         }, 300);
     });
     
-    // اسکرول به سوال بعدی
+    // بهبود تجربه تاچ در موبایل
+    if (isTouchDevice) {
+        $('.oa-option label').css({
+            'cursor': 'pointer',
+            'user-select': 'none',
+            '-webkit-tap-highlight-color': 'transparent'
+        });
+        
+        $('.oa-btn').css({
+            'cursor': 'pointer',
+            'user-select': 'none',
+            '-webkit-tap-highlight-color': 'transparent'
+        });
+    }
+    
+    // اسکرول به سوال بعدی (بهینه شده برای موبایل)
     function scrollToNextQuestion() {
+        const offset = $(window).width() < 768 ? 80 : 100; // کمتر در موبایل
         $('html, body').animate({
-            scrollTop: $('.oa-question').eq(currentQuestion).offset().top - 100
-        }, 500);
+            scrollTop: $('.oa-question').eq(currentQuestion).offset().top - offset
+        }, 300); // سریع‌تر در موبایل
     }
     
     // اضافه کردن اسکرول خودکار
@@ -241,9 +262,9 @@ jQuery(document).ready(function($) {
         }
     });
     
-    // نمایش راهنمای کیبورد
-    if ($('.oa-quiz-container').length) {
-        $('<div class="oa-keyboard-help">' +
+    // نمایش راهنمای کیبورد فقط در دسکتاپ
+    if ($('.oa-quiz-container').length && $(window).width() > 768) {
+        $('<div class="oa-keyboard-help" style="margin-top: 10px; padding: 8px; background: rgba(255,255,255,0.2); border-radius: 5px; font-size: 12px; text-align: center;">' +
           '<small>راهنما: از کلیدهای ← → برای حرکت بین سوالات و اعداد 1-4 برای انتخاب گزینه استفاده کنید</small>' +
           '</div>').appendTo('.oa-quiz-header');
     }
