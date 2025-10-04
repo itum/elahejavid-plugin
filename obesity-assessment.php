@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.7
+ * Version: 1.0.8
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -49,6 +49,7 @@ class ObesityAssessment {
         // ثبت شورت‌کد
         add_shortcode('oa_quiz', array($this, 'quiz_shortcode'));
         add_shortcode('obesity_assessment', array($this, 'quiz_shortcode'));
+        add_shortcode('oa_flush_rules', array($this, 'flush_rules_shortcode'));
         
         // اضافه کردن منوی سایت
         add_action('wp_nav_menu_items', array($this, 'add_menu_item'), 10, 2);
@@ -72,6 +73,7 @@ class ObesityAssessment {
     public function activate() {
         $this->create_tables();
         $this->populate_default_data();
+        $this->add_rewrite_rules();
         flush_rewrite_rules();
     }
     
@@ -704,15 +706,28 @@ class ObesityAssessment {
     
     public function add_rewrite_rules() {
         add_rewrite_rule('^oa-result/?$', 'index.php?oa_result=1', 'top');
+        add_rewrite_rule('^oa-result/([^/]+)/?$', 'index.php?oa_result=1&oa_result_id=$matches[1]', 'top');
     }
     
     public function add_query_vars($vars) {
         $vars[] = 'oa_result';
+        $vars[] = 'oa_result_id';
         return $vars;
     }
     
     public function template_redirect() {
         if (get_query_var('oa_result')) {
+            // بررسی وجود session
+            if (!session_id()) {
+                session_start();
+            }
+            
+            if (!isset($_SESSION['oa_result'])) {
+                // اگر session وجود ندارد، به صفحه اصلی هدایت کن
+                wp_redirect(home_url('/'));
+                exit;
+            }
+            
             include OA_PLUGIN_PATH . 'templates/result-page.php';
             exit;
         }
@@ -794,6 +809,23 @@ class ObesityAssessment {
             'is_admin' => current_user_can('manage_options'),
             'nonce' => wp_create_nonce('oa_admin_nonce')
         ));
+    }
+    
+    // تابع برای flush کردن rewrite rules
+    public function flush_rewrite_rules_now() {
+        $this->add_rewrite_rules();
+        flush_rewrite_rules();
+        return true;
+    }
+    
+    // شورت‌کد برای flush کردن rewrite rules
+    public function flush_rules_shortcode($atts) {
+        if (!current_user_can('manage_options')) {
+            return '<p>شما دسترسی لازم را ندارید.</p>';
+        }
+        
+        $this->flush_rewrite_rules_now();
+        return '<p style="color: green;">Rewrite rules با موفقیت بازنشانی شد!</p>';
     }
 }
 
