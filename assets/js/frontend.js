@@ -8,6 +8,15 @@ jQuery(document).ready(function($) {
     let isSubmitting = false;
     let isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     
+    // تابع تبدیل اعداد انگلیسی به فارسی
+    function convertToPersianNumbers(str) {
+        const english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+        const persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return str.toString().replace(/[0-9]/g, function(match) {
+            return persian[english.indexOf(match)];
+        });
+    }
+    
     // مقداردهی اولیه
     function init() {
         totalQuestions = $('.oa-question').length;
@@ -108,7 +117,7 @@ jQuery(document).ready(function($) {
     function updateProgress() {
         const progress = ((currentQuestion + 1) / totalQuestions) * 100;
         $('.oa-progress-fill').css('width', progress + '%');
-        $('.oa-progress-text').text(`سوال ${currentQuestion + 1} از ${totalQuestions}`);
+        $('.oa-progress-text').text(`سوال ${convertToPersianNumbers(currentQuestion + 1)} از ${convertToPersianNumbers(totalQuestions)}`);
     }
     
     // ارسال تست

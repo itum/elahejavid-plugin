@@ -4,6 +4,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// تابع تبدیل اعداد انگلیسی به فارسی
+function convertToPersianNumbers($str) {
+    $english = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    $persian = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+    return str_replace($english, $persian, $str);
+}
+
 global $wpdb;
 
 // دریافت گروه‌ها و سوالات
@@ -61,7 +68,7 @@ foreach ($groups as $group) {
         <div class="oa-progress-bar">
             <div class="oa-progress-fill"></div>
         </div>
-        <div class="oa-progress-text">سوال 1 از <?php echo count($all_questions); ?></div>
+        <div class="oa-progress-text">سوال <?php echo convertToPersianNumbers('1'); ?> از <?php echo convertToPersianNumbers(count($all_questions)); ?></div>
     </div>
     
     <form class="oa-quiz-form" method="post">

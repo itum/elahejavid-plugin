@@ -4,6 +4,13 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// تابع تبدیل اعداد انگلیسی به فارسی
+function convertToPersianNumbers($str) {
+    $english = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+    $persian = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+    return str_replace($english, $persian, $str);
+}
+
 global $wpdb;
 
 // دریافت نتیجه از session
@@ -130,13 +137,13 @@ $total_score = array_sum($result['group_scores']);
             ?>
             <div class="oa-score-item <?php echo $is_winner ? 'winner' : ''; ?>">
                 <span class="oa-score-name"><?php echo esc_html($group->name); ?></span>
-                <span class="oa-score-value"><?php echo $score; ?> / 12</span>
+                <span class="oa-score-value"><?php echo convertToPersianNumbers($score); ?> / <?php echo convertToPersianNumbers('12'); ?></span>
             </div>
             <?php endforeach; ?>
             
             <div class="oa-score-item" style="border-top: 3px solid #667eea; margin-top: 20px; padding-top: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-size: 18px; font-weight: bold;">
                 <span class="oa-score-name">امتیاز کل</span>
-                <span class="oa-score-value"><?php echo $total_score; ?> / 108</span>
+                <span class="oa-score-value"><?php echo convertToPersianNumbers($total_score); ?> / <?php echo convertToPersianNumbers('108'); ?></span>
             </div>
         </div>
         
@@ -152,45 +159,48 @@ $total_score = array_sum($result['group_scores']);
 </div>
 
 <style>
+/* فونت ایران‌سنس */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* استایل‌های بهبود یافته برای صفحه نتیجه */
 .oa-result-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    padding: 40px 20px;
-    font-family: 'Tahoma', 'Arial', sans-serif;
+    padding: 30px 15px;
+    font-family: 'Inter', 'Tahoma', 'Arial', sans-serif;
 }
 
 .oa-result-header {
     text-align: center;
-    margin-bottom: 40px;
-    padding: 40px 30px;
+    margin-bottom: 25px;
+    padding: 25px 20px;
     background: rgba(255, 255, 255, 0.95);
     color: #333;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     backdrop-filter: blur(10px);
 }
 
 .oa-result-title {
-    font-size: 32px;
-    margin: 0 0 15px 0;
-    font-weight: bold;
+    font-size: 26px;
+    margin: 0 0 10px 0;
+    font-weight: 600;
     color: #333;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 .oa-result-subtitle {
-    font-size: 18px;
+    font-size: 16px;
     margin: 0;
     color: #666;
-    line-height: 1.6;
+    line-height: 1.5;
 }
 
 .oa-result-content {
     background: rgba(255, 255, 255, 0.95);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     backdrop-filter: blur(10px);
     animation: fadeInUp 0.8s ease-out;
 }
@@ -207,28 +217,28 @@ $total_score = array_sum($result['group_scores']);
 }
 
 .oa-group-info {
-    margin-bottom: 40px;
-    padding: 30px;
+    margin-bottom: 25px;
+    padding: 20px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-    border-right: 5px solid #667eea;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    border-right: 4px solid #667eea;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
     animation: slideInRight 0.6s ease-out;
 }
 
 .oa-group-name {
-    font-size: 28px;
-    font-weight: bold;
+    font-size: 22px;
+    font-weight: 600;
     color: #333;
-    margin: 0 0 15px 0;
+    margin: 0 0 10px 0;
     text-align: center;
 }
 
 .oa-group-description {
-    font-size: 18px;
+    font-size: 16px;
     color: #666;
-    margin: 0 0 20px 0;
-    line-height: 1.8;
+    margin: 0 0 15px 0;
+    line-height: 1.6;
     text-align: center;
 }
 
@@ -254,16 +264,16 @@ $total_score = array_sum($result['group_scores']);
     font-size: 16px;
 }
 
-/* بهینه‌سازی ویدیو */
+/* بهینه‌سازی ویدیو - مربعی */
 .oa-video-container {
-    margin: 40px 0;
+    margin: 25px 0;
     text-align: center;
 }
 
 .oa-video-title {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 0 0 25px 0;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
     color: #333;
     text-align: center;
 }
@@ -271,13 +281,14 @@ $total_score = array_sum($result['group_scores']);
 .oa-video-wrapper {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 500px;
     margin: 0 auto;
     background: #000;
-    border-radius: 15px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     transition: transform 0.3s ease;
+    aspect-ratio: 1/1; /* مربعی */
 }
 
 .oa-video-wrapper:hover {
@@ -286,19 +297,19 @@ $total_score = array_sum($result['group_scores']);
 
 .oa-video-wrapper video {
     width: 100%;
-    height: auto;
-    min-height: 400px;
+    height: 100%;
+    object-fit: cover;
     display: block;
-    border-radius: 15px;
+    border-radius: 12px;
 }
 
 /* بهبود جزئیات امتیازات */
 .oa-score-breakdown {
-    margin-top: 40px;
-    padding: 30px;
+    margin-top: 25px;
+    padding: 20px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 .oa-score-breakdown h4 {
@@ -354,12 +365,12 @@ $total_score = array_sum($result['group_scores']);
 .oa-navigation-buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
-    margin-top: 40px;
-    padding: 30px;
+    gap: 15px;
+    margin-top: 25px;
+    padding: 20px;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 15px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
 }
 
 .oa-btn {
@@ -471,10 +482,11 @@ $total_score = array_sum($result['group_scores']);
     
     .oa-video-wrapper {
         max-width: 100%;
+        aspect-ratio: 1/1;
     }
     
     .oa-video-wrapper video {
-        min-height: 250px;
+        height: 100%;
     }
     
     .oa-navigation-buttons {

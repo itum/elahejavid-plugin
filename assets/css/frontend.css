@@ -1,8 +1,11 @@
+/* فونت ایران‌سنس */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* استایل‌های عمومی برای افزونه تست تشخیص چاقی */
 .oa-quiz-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-family: 'Inter', 'Tahoma', 'Arial', sans-serif;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
