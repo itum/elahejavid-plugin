@@ -1,0 +1,484 @@
+/* استایل‌های عمومی برای افزونه تست تشخیص چاقی */
+.oa-quiz-container {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.oa-quiz-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 10px;
+}
+
+.oa-quiz-header h2 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.oa-quiz-header p {
+    margin: 10px 0 0 0;
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.oa-question {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-right: 4px solid #667eea;
+}
+
+.oa-question h3 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 18px;
+    line-height: 1.5;
+}
+
+.oa-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.oa-option {
+    margin-bottom: 10px;
+}
+
+.oa-option input[type="radio"] {
+    margin-left: 10px;
+    transform: scale(1.2);
+}
+
+.oa-option label {
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.oa-option label:hover {
+    background: #f8f9fa;
+    border-color: #667eea;
+}
+
+.oa-option input[type="radio"]:checked + label {
+    background: #667eea;
+    color: white;
+    border-color: #667eea;
+}
+
+.oa-progress {
+    margin-bottom: 30px;
+}
+
+.oa-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.oa-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.oa-progress-text {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: #666;
+}
+
+.oa-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
+}
+
+.oa-btn {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.oa-btn-primary {
+    background: #667eea;
+    color: white;
+}
+
+.oa-btn-primary:hover {
+    background: #5a6fd8;
+    transform: translateY(-2px);
+}
+
+.oa-btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.oa-btn-secondary:hover {
+    background: #5a6268;
+}
+
+.oa-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.oa-submit-btn {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+    font-size: 18px;
+    padding: 15px 30px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.oa-submit-btn:hover {
+    background: linear-gradient(135deg, #218838, #1ea085);
+}
+
+.oa-loading {
+    text-align: center;
+    padding: 20px;
+}
+
+.oa-loading::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #667eea;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* استایل‌های صفحه نتیجه */
+.oa-result-container {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.oa-result-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 15px;
+}
+
+.oa-result-title {
+    font-size: 28px;
+    margin: 0 0 15px 0;
+    font-weight: bold;
+}
+
+.oa-result-subtitle {
+    font-size: 18px;
+    margin: 0;
+    opacity: 0.9;
+}
+
+.oa-result-content {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.oa-group-info {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border-right: 5px solid #667eea;
+}
+
+.oa-group-name {
+    font-size: 22px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 10px 0;
+}
+
+.oa-group-description {
+    font-size: 16px;
+    color: #666;
+    margin: 0 0 15px 0;
+    line-height: 1.6;
+}
+
+.oa-group-tips {
+    background: #e3f2fd;
+    padding: 15px;
+    border-radius: 8px;
+    border-right: 3px solid #2196f3;
+}
+
+.oa-group-tips h4 {
+    margin: 0 0 10px 0;
+    color: #1976d2;
+    font-size: 16px;
+}
+
+.oa-group-tips p {
+    margin: 0;
+    color: #333;
+    line-height: 1.5;
+}
+
+.oa-video-container {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.oa-video-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+    color: #333;
+}
+
+.oa-video-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.oa-video-wrapper video {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.oa-score-breakdown {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.oa-score-breakdown h4 {
+    margin: 0 0 15px 0;
+    color: #333;
+    font-size: 18px;
+}
+
+.oa-score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.oa-score-item:last-child {
+    border-bottom: none;
+}
+
+.oa-score-name {
+    font-weight: bold;
+    color: #333;
+}
+
+.oa-score-value {
+    font-weight: bold;
+    color: #667eea;
+}
+
+.oa-retake-btn {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* استایل‌های ریسپانسیو */
+@media (max-width: 768px) {
+    .oa-quiz-container,
+    .oa-result-container {
+        padding: 15px;
+        margin: 10px;
+    }
+    
+    .oa-quiz-header h2 {
+        font-size: 20px;
+    }
+    
+    .oa-question h3 {
+        font-size: 16px;
+    }
+    
+    .oa-option label {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+    
+    .oa-navigation {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .oa-btn {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .oa-result-title {
+        font-size: 24px;
+    }
+    
+    .oa-group-name {
+        font-size: 20px;
+    }
+}
+
+/* استایل‌های ادمین */
+.oa-admin-container {
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tahoma', 'Arial', sans-serif;
+}
+
+.oa-admin-header {
+    background: #667eea;
+    color: white;
+    padding: 20px;
+    margin: -20px -20px 30px -20px;
+    border-radius: 0 0 10px 10px;
+}
+
+.oa-admin-header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.oa-admin-content {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.oa-form-group {
+    margin-bottom: 20px;
+}
+
+.oa-form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.oa-form-group input,
+.oa-form-group textarea,
+.oa-form-group select {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.oa-form-group input:focus,
+.oa-form-group textarea:focus,
+.oa-form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.oa-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.oa-table th,
+.oa-table td {
+    padding: 12px;
+    text-align: right;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.oa-table th {
+    background: #f8f9fa;
+    font-weight: bold;
+    color: #333;
+}
+
+.oa-table tr:hover {
+    background: #f8f9fa;
+}
+
+.oa-btn-small {
+    padding: 6px 12px;
+    font-size: 12px;
+}
+
+.oa-btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.oa-btn-danger:hover {
+    background: #c82333;
+}
+
+.oa-btn-warning {
+    background: #ffc107;
+    color: #212529;
+}
+
+.oa-btn-warning:hover {
+    background: #e0a800;
+}
