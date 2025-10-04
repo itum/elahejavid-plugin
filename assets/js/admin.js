@@ -134,6 +134,9 @@ jQuery(document).ready(function($) {
             case 'results':
                 loadResults();
                 break;
+            case 'help':
+                // تب راهنما نیازی به بارگذاری داده ندارد
+                break;
         }
     }
     
@@ -623,6 +626,16 @@ jQuery(document).ready(function($) {
         }, 5000);
     }
     
+    // نمایش پیام موفقیت کپی
+    function showCopySuccess($button) {
+        const originalText = $button.text();
+        $button.text('کپی شد!').removeClass('oa-btn-secondary').addClass('oa-btn-success');
+        
+        setTimeout(function() {
+            $button.text(originalText).removeClass('oa-btn-success').addClass('oa-btn-secondary');
+        }, 2000);
+    }
+    
     // شروع افزونه
     init();
     
@@ -658,18 +671,44 @@ jQuery(document).ready(function($) {
         $table.find('tbody').empty().append($rows);
     });
     
-    // جستجو در جدول
-    $('.oa-search-input').on('keyup', function() {
-        const searchTerm = $(this).val().toLowerCase();
-        const $table = $(this).closest('.oa-tab-content').find('.oa-table');
+        // جستجو در جدول
+        $('.oa-search-input').on('keyup', function() {
+            const searchTerm = $(this).val().toLowerCase();
+            const $table = $(this).closest('.oa-tab-content').find('.oa-table');
+            
+            $table.find('tbody tr').each(function() {
+                const rowText = $(this).text().toLowerCase();
+                if (rowText.indexOf(searchTerm) === -1) {
+                    $(this).hide();
+                } else {
+                    $(this).show();
+                }
+            });
+        });
         
-        $table.find('tbody tr').each(function() {
-            const rowText = $(this).text().toLowerCase();
-            if (rowText.indexOf(searchTerm) === -1) {
-                $(this).hide();
+        // دکمه‌های کپی در تب راهنما
+        $(document).on('click', '.oa-copy-btn', function(e) {
+            e.preventDefault();
+            const textToCopy = $(this).data('copy');
+            
+            // کپی کردن به clipboard
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(textToCopy).then(function() {
+                    showCopySuccess($(this));
+                }.bind(this));
             } else {
-                $(this).show();
+                // Fallback برای مرورگرهای قدیمی
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopySuccess($(this));
+                } catch (err) {
+                    console.error('Unable to copy text: ', err);
+                }
+                document.body.removeChild(textArea);
             }
         });
-    });
 });

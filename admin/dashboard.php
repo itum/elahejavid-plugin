@@ -34,6 +34,7 @@ $recent_results = $wpdb->get_results("
             <button class="oa-admin-tab" data-tab="groups">گروه‌ها</button>
             <button class="oa-admin-tab" data-tab="questions">سوالات</button>
             <button class="oa-admin-tab" data-tab="results">نتایج</button>
+            <button class="oa-admin-tab" data-tab="help">راهنما</button>
         </div>
         
         <!-- تب داشبورد -->
@@ -176,6 +177,130 @@ $recent_results = $wpdb->get_results("
             
             <div class="oa-table-container">
                 <!-- جدول نتایج توسط JavaScript بارگذاری می‌شود -->
+            </div>
+        </div>
+        
+        <!-- تب راهنما -->
+        <div class="oa-tab-content" data-tab="help">
+            <h3>راهنمای استفاده از شورت کدها</h3>
+            
+            <div class="oa-help-section">
+                <h4>🎯 شورت کد اصلی</h4>
+                <div class="oa-code-block">
+                    <code>[obesity_assessment]</code>
+                    <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[obesity_assessment]">کپی</button>
+                </div>
+                <p>این شورت کد فرم تست تشخیص نوع چاقی را نمایش می‌دهد. کاربران می‌توانند با پاسخ دادن به سوالات، نوع چاقی خود را تشخیص دهند.</p>
+            </div>
+            
+            <div class="oa-help-section">
+                <h4>📊 شورت کد نتایج</h4>
+                <div class="oa-code-block">
+                    <code>[obesity_results]</code>
+                    <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[obesity_results]">کپی</button>
+                </div>
+                <p>این شورت کد آمار و نتایج تست‌ها را نمایش می‌دهد. شامل تعداد کل تست‌ها، تست‌های امروز و آمار کلی است.</p>
+            </div>
+            
+            <div class="oa-help-section">
+                <h4>⚙️ پارامترهای شورت کد اصلی</h4>
+                <p>شورت کد اصلی از پارامترهای زیر پشتیبانی می‌کند:</p>
+                
+                <div class="oa-params-grid">
+                    <div class="oa-param-item">
+                        <strong>show_title</strong>
+                        <span class="oa-param-type">boolean</span>
+                        <span class="oa-param-default">true</span>
+                        <p>نمایش عنوان تست (true/false)</p>
+                    </div>
+                    
+                    <div class="oa-param-item">
+                        <strong>show_progress</strong>
+                        <span class="oa-param-type">boolean</span>
+                        <span class="oa-param-default">true</span>
+                        <p>نمایش نوار پیشرفت (true/false)</p>
+                    </div>
+                    
+                    <div class="oa-param-item">
+                        <strong>button_text</strong>
+                        <span class="oa-param-type">string</span>
+                        <span class="oa-param-default">شروع تست</span>
+                        <p>متن دکمه شروع تست</p>
+                    </div>
+                    
+                    <div class="oa-param-item">
+                        <strong>theme</strong>
+                        <span class="oa-param-type">string</span>
+                        <span class="oa-param-default">default</span>
+                        <p>تم نمایش (default, modern, classic)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="oa-help-section">
+                <h4>📝 مثال‌های استفاده</h4>
+                
+                <div class="oa-example-block">
+                    <h5>استفاده ساده:</h5>
+                    <div class="oa-code-block">
+                        <code>[obesity_assessment]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[obesity_assessment]">کپی</button>
+                    </div>
+                </div>
+                
+                <div class="oa-example-block">
+                    <h5>بدون عنوان:</h5>
+                    <div class="oa-code-block">
+                        <code>[obesity_assessment show_title="false"]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy='[obesity_assessment show_title="false"]'>کپی</button>
+                    </div>
+                </div>
+                
+                <div class="oa-example-block">
+                    <h5>با تم مدرن:</h5>
+                    <div class="oa-code-block">
+                        <code>[obesity_assessment theme="modern" button_text="شروع تست جدید"]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy='[obesity_assessment theme="modern" button_text="شروع تست جدید"]'>کپی</button>
+                    </div>
+                </div>
+                
+                <div class="oa-example-block">
+                    <h5>بدون نوار پیشرفت:</h5>
+                    <div class="oa-code-block">
+                        <code>[obesity_assessment show_progress="false"]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy='[obesity_assessment show_progress="false"]'>کپی</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="oa-help-section">
+                <h4>🔧 نحوه قرار دادن در صفحه یا پست</h4>
+                <ol>
+                    <li>در ویرایشگر پست یا صفحه، به جایی که می‌خواهید تست را نمایش دهید بروید</li>
+                    <li>شورت کد مورد نظر را تایپ کنید یا از مثال‌های بالا کپی کنید</li>
+                    <li>پست یا صفحه را منتشر کنید</li>
+                    <li>تست در صفحه نمایش داده خواهد شد</li>
+                </ol>
+            </div>
+            
+            <div class="oa-help-section">
+                <h4>💡 نکات مهم</h4>
+                <ul>
+                    <li>✅ مطمئن شوید که حداقل یک گروه و چند سوال ایجاد کرده‌اید</li>
+                    <li>✅ هر گروه باید حداقل 4 سوال داشته باشد</li>
+                    <li>✅ هر سوال باید 4 گزینه داشته باشد</li>
+                    <li>✅ امتیاز گزینه‌ها باید از 0 تا 3 باشد</li>
+                    <li>⚠️ تست فقط برای کاربران لاگین شده کار می‌کند (در صورت نیاز می‌توانید این تنظیم را تغییر دهید)</li>
+                </ul>
+            </div>
+            
+            <div class="oa-help-section">
+                <h4>🆘 پشتیبانی</h4>
+                <p>در صورت بروز مشکل یا نیاز به راهنمایی بیشتر، با تیم پشتیبانی تماس بگیرید.</p>
+                <div class="oa-contact-info">
+                    <p><strong>ایمیل:</strong> support@example.com</p>
+                    <p><strong>تلفن:</strong> 021-12345678</p>
+                </div>
             </div>
         </div>
     </div>
