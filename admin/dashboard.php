@@ -298,8 +298,8 @@ $recent_results = $wpdb->get_results("
                 <h4>🆘 پشتیبانی</h4>
                 <p>در صورت بروز مشکل یا نیاز به راهنمایی بیشتر، با تیم پشتیبانی تماس بگیرید.</p>
                 <div class="oa-contact-info">
-                    <p><strong>ایمیل:</strong> support@example.com</p>
-                    <p><strong>تلفن:</strong> 021-12345678</p>
+                    <p><strong>ایمیل:</strong> mansour.shokat@gmail.com</p>
+                    <p><strong>تلفن:</strong> 09129744364</p>
                 </div>
             </div>
         </div>
