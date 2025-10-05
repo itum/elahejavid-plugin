@@ -190,7 +190,7 @@ $total_score = array_sum($result['group_scores']);
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 30px 15px;
-    font-family: 'Inter', 'Tahoma', 'Arial', sans-serif;
+    font-family: 'Inter', 'Arial', sans-serif;
     direction: rtl;
     text-align: right;
 }
@@ -224,30 +224,36 @@ $total_score = array_sum($result['group_scores']);
 /* استایل‌های متن تبریک با فونت درشت */
 .oa-congratulations {
     margin: 25px 0;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    border: 3px solid #28a745;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
 }
 
 .oa-congratulations-title {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: bold;
-    margin: 0 0 15px 0;
-    color: #fff;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    margin: 0 0 20px 0;
+    color: #28a745;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
     text-align: center;
 }
 
 .oa-congratulations-text {
-    font-size: 20px;
-    font-weight: 600;
+    font-size: 22px;
+    font-weight: 700;
     margin: 0;
-    color: #fff;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    color: #333;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
     text-align: center;
-    line-height: 1.6;
+    line-height: 1.7;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    /* Fallback برای مرورگرهایی که gradient text پشتیبانی نمی‌کنند */
+    -webkit-text-fill-color: #28a745;
 }
 
 .oa-congratulations-text strong {
@@ -258,19 +264,20 @@ $total_score = array_sum($result['group_scores']);
 /* استایل‌های متن پیشنهاد ویدیو با فونت ریزتر */
 .oa-video-suggestion {
     margin: 20px 0 0 0;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 12px;
+    border: 2px solid #667eea;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
 }
 
 .oa-video-suggestion-text {
-    font-size: 14px;
+    font-size: 16px;
     margin: 0;
-    color: rgba(255, 255, 255, 0.9);
+    color: #333;
     text-align: center;
-    line-height: 1.5;
-    font-style: italic;
+    line-height: 1.6;
+    font-weight: 500;
 }
 
 .oa-result-content {
@@ -584,18 +591,20 @@ $total_score = array_sum($result['group_scores']);
     }
     
     .oa-congratulations-title {
-        font-size: 26px;
-        margin-bottom: 12px;
+        font-size: 28px;
+        margin-bottom: 15px;
     }
     
     .oa-congratulations-text {
         font-size: 18px;
-        line-height: 1.5;
+        line-height: 1.6;
+        font-weight: 600;
     }
     
     .oa-video-suggestion-text {
-        font-size: 13px;
-        line-height: 1.4;
+        font-size: 14px;
+        line-height: 1.5;
+        font-weight: 500;
     }
     
     .oa-result-content {
@@ -722,18 +731,20 @@ $total_score = array_sum($result['group_scores']);
     }
     
     .oa-congratulations-title {
-        font-size: 22px;
-        margin-bottom: 10px;
+        font-size: 24px;
+        margin-bottom: 12px;
     }
     
     .oa-congratulations-text {
         font-size: 16px;
-        line-height: 1.4;
+        line-height: 1.5;
+        font-weight: 600;
     }
     
     .oa-video-suggestion-text {
-        font-size: 12px;
-        line-height: 1.3;
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: 500;
     }
     
     .oa-result-content {
@@ -836,18 +847,20 @@ $total_score = array_sum($result['group_scores']);
     }
     
     .oa-congratulations-title {
-        font-size: 20px;
-        margin-bottom: 8px;
+        font-size: 22px;
+        margin-bottom: 10px;
     }
     
     .oa-congratulations-text {
         font-size: 15px;
-        line-height: 1.3;
+        line-height: 1.4;
+        font-weight: 600;
     }
     
     .oa-video-suggestion-text {
-        font-size: 11px;
-        line-height: 1.2;
+        font-size: 12px;
+        line-height: 1.3;
+        font-weight: 500;
     }
     
     .oa-result-content {

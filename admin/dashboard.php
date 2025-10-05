@@ -12,11 +12,16 @@ $total_questions = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_questi
 $total_results = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_results");
 $today_results = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_results WHERE DATE(created_at) = CURDATE()");
 
-// آخرین نتایج
+// آخرین نتایج با اطلاعات کاربر و شماره تلفن
 $recent_results = $wpdb->get_results("
-    SELECT r.*, g.name as group_name
+    SELECT r.*, g.name as group_name,
+           u.display_name as user_name,
+           u.user_email as user_email,
+           phone_meta.meta_value as user_phone
     FROM {$wpdb->prefix}oa_results r
     LEFT JOIN {$wpdb->prefix}oa_groups g ON FIND_IN_SET(g.id, REPLACE(REPLACE(r.winning_groups, '[', ''), ']', ''))
+    LEFT JOIN {$wpdb->prefix}users u ON r.user_id = u.ID
+    LEFT JOIN {$wpdb->prefix}usermeta phone_meta ON r.user_id = phone_meta.user_id AND phone_meta.meta_key = 'digits_phone_no'
     ORDER BY r.created_at DESC
     LIMIT 10
 ");
@@ -65,6 +70,7 @@ $recent_results = $wpdb->get_results("
                     <tr>
                         <th>تاریخ</th>
                         <th>کاربر</th>
+                        <th>شماره تماس</th>
                         <th>نتیجه</th>
                         <th>امتیاز کل</th>
                     </tr>
@@ -73,8 +79,31 @@ $recent_results = $wpdb->get_results("
                     <?php foreach ($recent_results as $result): ?>
                     <tr>
                         <td><?php echo date('Y/m/d H:i', strtotime($result->created_at)); ?></td>
-                        <td><?php echo $result->user_id ? get_userdata($result->user_id)->display_name : 'مهمان'; ?></td>
-                        <td><?php echo $result->group_name; ?></td>
+                        <td>
+                            <?php 
+                            if ($result->user_id && $result->user_name) {
+                                echo esc_html($result->user_name);
+                            } elseif ($result->user_id && $result->user_phone) {
+                                echo esc_html($result->user_phone);
+                            } elseif ($result->user_id) {
+                                echo 'کاربر ' . $result->user_id;
+                            } else {
+                                echo 'مهمان';
+                            }
+                            ?>
+                        </td>
+                        <td>
+                            <?php 
+                            if ($result->user_phone) {
+                                echo esc_html($result->user_phone);
+                            } elseif ($result->user_id) {
+                                echo '-';
+                            } else {
+                                echo '-';
+                            }
+                            ?>
+                        </td>
+                        <td><?php echo esc_html($result->group_name); ?></td>
                         <td><?php echo array_sum(json_decode($result->group_scores, true)); ?></td>
                     </tr>
                     <?php endforeach; ?>

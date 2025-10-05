@@ -138,11 +138,40 @@ jQuery(document).ready(function($) {
             return;
         }
         
+        // بررسی اضافی: اطمینان از اینکه همه سوالات پاسخ داده شده‌اند
+        const totalAnswered = answers.filter(answer => answer !== null && answer !== undefined).length;
+        if (totalAnswered !== totalQuestions) {
+            alert('لطفاً به همه سوالات پاسخ دهید.');
+            return;
+        }
+        
         isSubmitting = true;
         
         // نمایش لودینگ
         $('.oa-submit-btn').html('<span class="oa-loading"></span> در حال پردازش...');
         $('.oa-submit-btn').prop('disabled', true);
+        
+        // آماده‌سازی داده‌ها برای ارسال
+        const answersData = {};
+        
+        // تبدیل آرایه answers به فرمت مورد نیاز سرور
+        $('.oa-question').each(function(index) {
+            const questionId = $(this).data('question-id') || index;
+            const selectedOption = $(this).find('input[type="radio"]:checked');
+            
+            if (selectedOption.length > 0) {
+                const optionIndex = selectedOption.closest('.oa-option').data('option-index');
+                answersData[questionId] = optionIndex;
+            }
+        });
+        
+        // بررسی نهایی
+        const answeredQuestions = Object.keys(answersData).length;
+        if (answeredQuestions !== totalQuestions) {
+            alert('لطفاً به همه سوالات پاسخ دهید.');
+            resetSubmitButton();
+            return;
+        }
         
         // ارسال داده‌ها
         $.ajax({
@@ -151,7 +180,7 @@ jQuery(document).ready(function($) {
             data: {
                 action: 'oa_submit_quiz',
                 nonce: oa_ajax.nonce,
-                answers: answers
+                answers: answersData
             },
             success: function(response) {
                 if (response.success) {

@@ -2,7 +2,7 @@
 .oa-admin-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Tahoma', 'Arial', sans-serif;
+    /* فونت از WordPress admin ارث‌بری می‌کند */
     background: #f1f3f4;
     min-height: 100vh;
     padding: 20px;

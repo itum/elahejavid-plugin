@@ -73,7 +73,7 @@ foreach ($groups as $group) {
     
     <form class="oa-quiz-form" method="post">
         <?php foreach ($all_questions as $index => $question): ?>
-        <div class="oa-question" data-question-index="<?php echo $index; ?>" <?php echo $index > 0 ? 'style="display: none;"' : ''; ?>>
+        <div class="oa-question" data-question-index="<?php echo $index; ?>" data-question-id="<?php echo $question->id; ?>" <?php echo $index > 0 ? 'style="display: none;"' : ''; ?>>
             <h3><?php echo esc_html($question->question_text); ?></h3>
             
             <ul class="oa-options">

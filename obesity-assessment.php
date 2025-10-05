@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.22
+ * Version: 1.0.26
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -819,6 +819,20 @@ class ObesityAssessment {
         global $wpdb;
         
         $answers = $_POST['answers'];
+        
+        // بررسی وجود پاسخ‌ها
+        if (empty($answers) || !is_array($answers)) {
+            wp_die('هیچ پاسخی دریافت نشد. لطفاً دوباره تلاش کنید.');
+            return;
+        }
+        
+        // بررسی تعداد پاسخ‌ها
+        $total_questions = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_questions");
+        if (count($answers) < $total_questions) {
+            wp_die('لطفاً به همه سوالات پاسخ دهید. تعداد پاسخ‌های دریافتی: ' . count($answers) . ' از ' . $total_questions);
+            return;
+        }
+        
         $group_scores = array();
         
         // محاسبه امتیاز هر گروه
@@ -899,6 +913,20 @@ class ObesityAssessment {
         global $wpdb;
         
         $answers = $_POST['answers'];
+        
+        // بررسی وجود پاسخ‌ها
+        if (empty($answers) || !is_array($answers)) {
+            wp_send_json_error(array('message' => 'هیچ پاسخی دریافت نشد. لطفاً دوباره تلاش کنید.'));
+            return;
+        }
+        
+        // بررسی تعداد پاسخ‌ها
+        $total_questions = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_questions");
+        if (count($answers) < $total_questions) {
+            wp_send_json_error(array('message' => 'لطفاً به همه سوالات پاسخ دهید. تعداد پاسخ‌های دریافتی: ' . count($answers) . ' از ' . $total_questions));
+            return;
+        }
+        
         $group_scores = array();
         
         // محاسبه امتیاز هر گروه

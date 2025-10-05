@@ -26,7 +26,7 @@
 .oa-quiz-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Inter', 'Tahoma', 'Arial', sans-serif;
+    font-family: 'Inter', 'Arial', sans-serif;
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -259,7 +259,7 @@
 .oa-result-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Tahoma', 'Arial', sans-serif;
+    font-family: 'Inter', 'Arial', sans-serif;
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;
@@ -777,7 +777,7 @@
 .oa-admin-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Tahoma', 'Arial', sans-serif;
+    /* فونت از WordPress admin ارث‌بری می‌کند */
 }
 
 .oa-admin-header {

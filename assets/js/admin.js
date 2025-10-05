@@ -316,7 +316,7 @@ jQuery(document).ready(function($) {
     // رندر جدول نتایج
     function renderResultsTable(results) {
         let html = '<table class="oa-table">';
-        html += '<thead><tr><th>تاریخ</th><th>کاربر</th><th>گروه‌های برنده</th><th>امتیازات</th><th>عملیات</th></tr></thead>';
+        html += '<thead><tr><th>تاریخ</th><th>کاربر</th><th>شماره تماس</th><th>گروه‌های برنده</th><th>امتیازات</th><th>عملیات</th></tr></thead>';
         html += '<tbody>';
         
         results.forEach(function(result) {
@@ -327,14 +327,27 @@ jQuery(document).ready(function($) {
             // تشخیص نوع کاربر
             let userDisplay = 'مهمان';
             if (result.user_id && result.user_id > 0) {
-                userDisplay = result.user_name || 'کاربر ثبت‌شده';
+                if (result.user_name) {
+                    userDisplay = result.user_name;
+                } else if (result.user_phone) {
+                    userDisplay = result.user_phone;
+                } else {
+                    userDisplay = 'کاربر ثبت‌شده';
+                }
             } else if (result.session_id) {
                 userDisplay = 'کاربر موقت (Session)';
+            }
+            
+            // شماره تماس
+            let phoneDisplay = '-';
+            if (result.user_phone) {
+                phoneDisplay = result.user_phone;
             }
             
             html += '<tr>';
             html += '<td>' + formattedDate + '</td>';
             html += '<td>' + userDisplay + '</td>';
+            html += '<td>' + phoneDisplay + '</td>';
             html += '<td>' + (result.winning_groups || 'نامشخص') + '</td>';
             html += '<td>' + (result.group_scores || 'نامشخص') + '</td>';
             html += '<td class="oa-actions">';

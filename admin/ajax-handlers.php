@@ -284,6 +284,8 @@ function oa_get_results() {
     $results = $wpdb->get_results("
         SELECT r.*, 
                u.display_name as user_name,
+               u.user_email as user_email,
+               phone_meta.meta_value as user_phone,
                GROUP_CONCAT(g.name SEPARATOR ', ') as winning_groups,
                GROUP_CONCAT(
                    CONCAT(g.name, ': ', 
@@ -292,6 +294,7 @@ function oa_get_results() {
                ) as group_scores
         FROM {$wpdb->prefix}oa_results r
         LEFT JOIN {$wpdb->prefix}users u ON r.user_id = u.ID
+        LEFT JOIN {$wpdb->prefix}usermeta phone_meta ON r.user_id = phone_meta.user_id AND phone_meta.meta_key = 'digits_phone_no'
         LEFT JOIN {$wpdb->prefix}oa_groups g ON FIND_IN_SET(g.id, REPLACE(REPLACE(r.winning_groups, '[', ''), ']', ''))
         GROUP BY r.id
         ORDER BY r.created_at DESC
@@ -307,9 +310,11 @@ function oa_view_result() {
     
     global $wpdb;
     $result = $wpdb->get_row($wpdb->prepare("
-        SELECT r.*, u.display_name as user_name
+        SELECT r.*, u.display_name as user_name, u.user_email as user_email,
+               phone_meta.meta_value as user_phone
         FROM {$wpdb->prefix}oa_results r
         LEFT JOIN {$wpdb->prefix}users u ON r.user_id = u.ID
+        LEFT JOIN {$wpdb->prefix}usermeta phone_meta ON r.user_id = phone_meta.user_id AND phone_meta.meta_key = 'digits_phone_no'
         WHERE r.id = %d
     ", $id));
     
@@ -324,13 +329,19 @@ function oa_view_result() {
             $group_names[$group->id] = $group->name;
         }
         
-        echo '<div style="direction: rtl; font-family: Tahoma; padding: 20px; max-width: 800px; margin: 0 auto;">';
+        echo '<div style="direction: rtl; padding: 20px; max-width: 800px; margin: 0 auto;">';
         echo '<h2>جزئیات نتیجه تست</h2>';
         echo '<div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px;">';
         echo '<p><strong>تاریخ:</strong> ' . date('Y/m/d H:i', strtotime($result->created_at)) . '</p>';
         
         if ($result->user_id && $result->user_id > 0) {
             echo '<p><strong>کاربر:</strong> ' . ($result->user_name ?: 'کاربر ثبت‌شده') . '</p>';
+            if ($result->user_email) {
+                echo '<p><strong>ایمیل:</strong> ' . esc_html($result->user_email) . '</p>';
+            }
+            if ($result->user_phone) {
+                echo '<p><strong>شماره تماس:</strong> ' . esc_html($result->user_phone) . '</p>';
+            }
         } else {
             echo '<p><strong>کاربر:</strong> مهمان (Session: ' . substr($result->session_id, 0, 8) . '...)</p>';
         }
@@ -369,7 +380,7 @@ function oa_view_result() {
         
         echo '</div>';
     } else {
-        echo '<div style="direction: rtl; font-family: Tahoma; padding: 20px; text-align: center;">';
+        echo '<div style="direction: rtl; padding: 20px; text-align: center;">';
         echo '<h2>نتیجه یافت نشد</h2>';
         echo '<p>نتیجه مورد نظر وجود ندارد یا حذف شده است.</p>';
         echo '</div>';
