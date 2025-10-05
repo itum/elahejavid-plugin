@@ -18,6 +18,9 @@ add_action('wp_ajax_oa_get_question', 'oa_get_question');
 add_action('wp_ajax_oa_get_results', 'oa_get_results');
 add_action('wp_ajax_oa_view_result', 'oa_view_result');
 
+add_action('wp_ajax_oa_get_settings', 'oa_get_settings');
+add_action('wp_ajax_oa_save_settings', 'oa_save_settings');
+
 // دریافت گروه‌ها
 function oa_get_groups() {
     // بررسی دسترسی ادمین
@@ -373,4 +376,127 @@ function oa_view_result() {
     }
     
     exit;
+}
+
+// دریافت تنظیمات
+function oa_get_settings() {
+    // بررسی دسترسی ادمین
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error(array('message' => 'عدم دسترسی'));
+        return;
+    }
+    
+    // بررسی nonce
+    if (!wp_verify_nonce($_POST['nonce'], 'oa_admin_nonce')) {
+        wp_send_json_error(array('message' => 'خطای امنیتی - nonce نامعتبر'));
+        return;
+    }
+    
+    // دریافت تنظیمات از options
+    $settings = array(
+        // تنظیمات متن‌های صفحه نتیجه
+        'congratulations_title' => get_option('oa_congratulations_title', 'تبریک! 🎉'),
+        'congratulations_text' => get_option('oa_congratulations_text', 'بر اساس تست شما، شما تیپ {GROUP_NAME} هستید. لطفاً ویدیو این چاقی را ببینید.'),
+        'video_suggestion_text' => get_option('oa_video_suggestion_text', 'همچنین پیشنهاد می‌کنیم که همه ۹ ویدیو چاقی را هم ببینید تا اطلاعات کاملی در مورد انواع مختلف چاقی داشته باشید.'),
+        'result_page_title' => get_option('oa_result_page_title', 'نتیجه تست تشخیص چاقی'),
+        'result_page_subtitle' => get_option('oa_result_page_subtitle', 'بر اساس پاسخ‌های شما، نوع چاقی شما مشخص شد'),
+        'video_title' => get_option('oa_video_title', 'ویدئوی آموزشی مربوط به دسته شما'),
+        'tips_title' => get_option('oa_tips_title', 'توصیه‌های تخصصی:'),
+        'score_breakdown_title' => get_option('oa_score_breakdown_title', 'جزئیات امتیازات شما:'),
+        'total_score_text' => get_option('oa_total_score_text', 'امتیاز کل'),
+        'multiple_types_text' => get_option('oa_multiple_types_text', 'شما عضو چند تیپ هستید'),
+        'multiple_types_description' => get_option('oa_multiple_types_description', 'بر اساس پاسخ‌های شما، شما در دسته‌های زیر قرار می‌گیرید:'),
+        
+        // تنظیمات ورود و احراز هویت
+        'enable_guest_access' => get_option('oa_enable_guest_access', '1'),
+        'enable_digits_login' => get_option('oa_enable_digits_login', '0'),
+        'digits_app_key' => get_option('oa_digits_app_key', ''),
+        'digits_redirect_url' => get_option('oa_digits_redirect_url', ''),
+        'digits_login_message' => get_option('oa_digits_login_message', 'برای شرکت در تست باید وارد شوید. لطفاً با شماره موبایل خود وارد شوید.'),
+        
+        // تنظیمات عمومی
+        'test_title' => get_option('oa_test_title', 'تست تشخیص نوع چاقی'),
+        'test_description' => get_option('oa_test_description', 'این تست به شما کمک می‌کند تا نوع چاقی خود را شناسایی کرده و راهکارهای مناسب را دریافت کنید.'),
+        'home_button_text' => get_option('oa_home_button_text', '🏠 بازگشت به خانه'),
+        'retake_test_text' => get_option('oa_retake_test_text', '🔄 تکرار تست'),
+    );
+    
+    wp_send_json_success($settings);
+}
+
+// ذخیره تنظیمات
+function oa_save_settings() {
+    // بررسی دسترسی ادمین
+    if (!current_user_can('manage_options')) {
+        wp_send_json_error(array('message' => 'عدم دسترسی'));
+        return;
+    }
+    
+    check_ajax_referer('oa_admin_nonce', 'nonce');
+    
+    // لیست فیلدهای مجاز
+    $allowed_fields = array(
+        'congratulations_title',
+        'congratulations_text',
+        'video_suggestion_text',
+        'result_page_title',
+        'result_page_subtitle',
+        'video_title',
+        'tips_title',
+        'score_breakdown_title',
+        'total_score_text',
+        'multiple_types_text',
+        'multiple_types_description',
+        'enable_guest_access',
+        'enable_digits_login',
+        'digits_app_key',
+        'digits_redirect_url',
+        'digits_login_message',
+        'test_title',
+        'test_description',
+        'home_button_text',
+        'retake_test_text'
+    );
+    
+    $saved_count = 0;
+    $errors = array();
+    
+    foreach ($allowed_fields as $field) {
+        if (isset($_POST[$field])) {
+            $value = $_POST[$field];
+            
+            // اعتبارسنجی بر اساس نوع فیلد
+            switch ($field) {
+                case 'enable_guest_access':
+                case 'enable_digits_login':
+                    $value = $value ? '1' : '0';
+                    break;
+                    
+                case 'digits_redirect_url':
+                    if (!empty($value) && !filter_var($value, FILTER_VALIDATE_URL)) {
+                        $errors[] = 'آدرس بازگشت Digits نامعتبر است';
+                        continue 2;
+                    }
+                    break;
+                    
+                default:
+                    $value = sanitize_text_field($value);
+                    break;
+            }
+            
+            // ذخیره در options
+            $option_name = 'oa_' . $field;
+            if (update_option($option_name, $value)) {
+                $saved_count++;
+            }
+        }
+    }
+    
+    if (!empty($errors)) {
+        wp_send_json_error(array('message' => implode('<br>', $errors)));
+    } elseif ($saved_count > 0) {
+        wp_send_json_success(array('message' => 'تنظیمات با موفقیت ذخیره شد'));
+    } else {
+        wp_send_json_error(array('message' => 'خطا در ذخیره تنظیمات'));
+    }
 }

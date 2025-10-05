@@ -25,6 +25,11 @@ jQuery(document).ready(function($) {
             handleFormSubmit($(this));
         });
         
+        // مدیریت checkbox Digits
+        $(document).on('change', '#enable_digits_login', function() {
+            toggleDigitsSettings();
+        });
+        
         // دکمه‌های حذف و ویرایش (delegated events)
         $(document).on('click', '.oa-btn-delete', function(e) {
             e.preventDefault();
@@ -134,6 +139,9 @@ jQuery(document).ready(function($) {
             case 'results':
                 loadResults();
                 break;
+            case 'settings':
+                loadSettings();
+                break;
             case 'help':
                 // تب راهنما نیازی به بارگذاری داده ندارد
                 break;
@@ -199,6 +207,62 @@ jQuery(document).ready(function($) {
                 }
             }
         });
+    }
+    
+    // بارگذاری تنظیمات
+    function loadSettings() {
+        $.ajax({
+            url: oa_admin_ajax.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'oa_get_settings',
+                nonce: oa_admin_ajax.nonce
+            },
+            success: function(response) {
+                if (response.success) {
+                    populateSettingsForm(response.data);
+                } else {
+                    console.error('Settings error:', response.data);
+                    showAlert('danger', 'خطا در بارگذاری تنظیمات: ' + (response.data.message || 'نامشخص'));
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX error loading settings:', xhr, status, error);
+                showAlert('danger', 'خطا در ارتباط با سرور: ' + error);
+            }
+        });
+    }
+    
+    // پر کردن فرم تنظیمات
+    function populateSettingsForm(settings) {
+        console.log('Populating settings form with data:', settings);
+        
+        // پر کردن فیلدهای فرم تنظیمات
+        Object.keys(settings).forEach(function(key) {
+            const $field = $('#settings-form [name="' + key + '"]');
+            if ($field.length) {
+                if ($field.is(':checkbox')) {
+                    $field.prop('checked', settings[key] === '1' || settings[key] === 1 || settings[key] === true);
+                } else {
+                    $field.val(settings[key]);
+                }
+            }
+        });
+        
+        // تنظیم نمایش/مخفی کردن تنظیمات Digits
+        toggleDigitsSettings();
+    }
+    
+    // نمایش/مخفی کردن تنظیمات Digits
+    function toggleDigitsSettings() {
+        const $digitsCheckbox = $('#enable_digits_login');
+        const $digitsSettings = $('.digits-settings');
+        
+        if ($digitsCheckbox.is(':checked')) {
+            $digitsSettings.addClass('show');
+        } else {
+            $digitsSettings.removeClass('show');
+        }
     }
     
     // رندر جدول گروه‌ها
@@ -297,12 +361,16 @@ jQuery(document).ready(function($) {
         const formData = new FormData($form[0]);
         
         // تشخیص نوع فرم
-        let actionName = 'oa_save_' + currentTab.slice(0, -1);
-        if ($form.attr('id') === 'edit-form') {
+        let actionName;
+        if ($form.attr('id') === 'settings-form') {
+            actionName = 'oa_save_settings';
+        } else if ($form.attr('id') === 'edit-form') {
             const editType = $form.data('edit-type');
             const editId = $form.data('edit-id');
             actionName = 'oa_save_' + editType;
             formData.append('edit_id', editId);
+        } else {
+            actionName = 'oa_save_' + currentTab.slice(0, -1);
         }
         
         formData.append('action', actionName);

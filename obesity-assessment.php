@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.20
+ * Version: 1.0.22
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -171,6 +171,9 @@ class ObesityAssessment {
     public function populate_default_data() {
         global $wpdb;
         
+        // تنظیم مقادیر پیشفرض تنظیمات
+        $this->set_default_settings();
+        
         // بررسی وجود داده
         $existing_groups = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_groups");
         if ($existing_groups > 0) {
@@ -260,6 +263,34 @@ class ObesityAssessment {
         
         // سوالات و گزینه‌ها
         $this->insert_questions_and_options();
+    }
+    
+    private function set_default_settings() {
+        // تنظیمات متن‌های صفحه نتیجه
+        add_option('oa_congratulations_title', 'تبریک! 🎉');
+        add_option('oa_congratulations_text', 'بر اساس تست شما، شما تیپ {GROUP_NAME} هستید. لطفاً ویدیو این چاقی را ببینید.');
+        add_option('oa_video_suggestion_text', 'همچنین پیشنهاد می‌کنیم که همه ۹ ویدیو چاقی را هم ببینید تا اطلاعات کاملی در مورد انواع مختلف چاقی داشته باشید.');
+        add_option('oa_result_page_title', 'نتیجه تست تشخیص چاقی');
+        add_option('oa_result_page_subtitle', 'بر اساس پاسخ‌های شما، نوع چاقی شما مشخص شد');
+        add_option('oa_video_title', 'ویدئوی آموزشی مربوط به دسته شما');
+        add_option('oa_tips_title', 'توصیه‌های تخصصی:');
+        add_option('oa_score_breakdown_title', 'جزئیات امتیازات شما:');
+        add_option('oa_total_score_text', 'امتیاز کل');
+        add_option('oa_multiple_types_text', 'شما عضو چند تیپ هستید');
+        add_option('oa_multiple_types_description', 'بر اساس پاسخ‌های شما، شما در دسته‌های زیر قرار می‌گیرید:');
+        
+        // تنظیمات ورود و احراز هویت
+        add_option('oa_enable_guest_access', '1');
+        add_option('oa_enable_digits_login', '0');
+        add_option('oa_digits_app_key', '');
+        add_option('oa_digits_redirect_url', '');
+        add_option('oa_digits_login_message', 'برای شرکت در تست باید وارد شوید. لطفاً با شماره موبایل خود وارد شوید.');
+        
+        // تنظیمات عمومی
+        add_option('oa_test_title', 'تست تشخیص نوع چاقی');
+        add_option('oa_test_description', 'این تست به شما کمک می‌کند تا نوع چاقی خود را شناسایی کرده و راهکارهای مناسب را دریافت کنید.');
+        add_option('oa_home_button_text', '🏠 بازگشت به خانه');
+        add_option('oa_retake_test_text', '🔄 تکرار تست');
     }
     
     private function insert_questions_and_options() {
@@ -692,12 +723,44 @@ class ObesityAssessment {
     }
     
     public function quiz_shortcode($atts) {
+        // بررسی تنظیمات ورود
+        $enable_guest_access = get_option('oa_enable_guest_access', '1');
+        $enable_digits_login = get_option('oa_enable_digits_login', '0');
+        
+        // اگر Digits فعال است، کاربر باید حتماً وارد شده باشد
+        if ($enable_digits_login === '1') {
+            if (!is_user_logged_in()) {
+                $digits_message = get_option('oa_digits_login_message', 'برای شرکت در تست باید وارد شوید. لطفاً با شماره موبایل خود وارد شوید.');
+                return '<div class="oa-login-required">' . esc_html($digits_message) . '</div>';
+            }
+        } else {
+            // اگر Digits غیرفعال است، مهمان را بررسی کن
+            if ($enable_guest_access === '0' && !is_user_logged_in()) {
+                return '<div class="oa-login-required">برای شرکت در تست باید وارد شوید.</div>';
+            }
+        }
+        
         ob_start();
         include OA_PLUGIN_PATH . 'templates/quiz-form.php';
         return ob_get_clean();
     }
     
     public function quiz_all_shortcode($atts) {
+        // بررسی تنظیمات ورود
+        $enable_guest_access = get_option('oa_enable_guest_access', '1');
+        $enable_digits_login = get_option('oa_enable_digits_login', '0');
+        
+        // اگر Digits فعال است و کاربر وارد نشده
+        if ($enable_digits_login === '1' && !is_user_logged_in()) {
+            $digits_message = get_option('oa_digits_login_message', 'برای شرکت در تست باید وارد شوید. لطفاً با شماره موبایل خود وارد شوید.');
+            return '<div class="oa-login-required">' . esc_html($digits_message) . '</div>';
+        }
+        
+        // اگر مهمان غیرفعال است و کاربر وارد نشده
+        if ($enable_guest_access === '0' && !is_user_logged_in()) {
+            return '<div class="oa-login-required">برای شرکت در تست باید وارد شوید.</div>';
+        }
+        
         try {
             ob_start();
             include OA_PLUGIN_PATH . 'templates/quiz-form-all.php';

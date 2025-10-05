@@ -1,6 +1,27 @@
 /* فونت ایران‌سنس */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* استایل پیام نیاز به ورود */
+.oa-login-required {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 20px 0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    direction: rtl;
+}
+
+.oa-login-required::before {
+    content: "🔐";
+    font-size: 48px;
+    display: block;
+    margin-bottom: 15px;
+}
+
 /* استایل‌های عمومی برای افزونه تست تشخیص چاقی */
 .oa-quiz-container {
     direction: rtl;

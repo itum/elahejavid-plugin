@@ -61,27 +61,29 @@ $total_score = array_sum($result['group_scores']);
 
 <div class="oa-result-container">
     <div class="oa-result-header">
-        <h1 class="oa-result-title">نتیجه تست تشخیص چاقی</h1>
-        <p class="oa-result-subtitle">بر اساس پاسخ‌های شما، نوع چاقی شما مشخص شد</p>
+        <h1 class="oa-result-title"><?php echo esc_html(get_option('oa_result_page_title', 'نتیجه تست تشخیص چاقی')); ?></h1>
+        <p class="oa-result-subtitle"><?php echo esc_html(get_option('oa_result_page_subtitle', 'بر اساس پاسخ‌های شما، نوع چاقی شما مشخص شد')); ?></p>
         
         <!-- متن تبریک با فونت درشت -->
         <div class="oa-congratulations">
-            <h2 class="oa-congratulations-title">تبریک! 🎉</h2>
+            <h2 class="oa-congratulations-title"><?php echo esc_html(get_option('oa_congratulations_title', 'تبریک! 🎉')); ?></h2>
             <p class="oa-congratulations-text">
-                بر اساس تست شما، شما تیپ 
-                <?php if (count($winning_groups_info) == 1): ?>
-                    <strong><?php echo esc_html($winning_groups_info[0]->name); ?></strong>
-                <?php else: ?>
-                    <strong>چندگانه</strong>
-                <?php endif; ?>
-                هستید. لطفاً ویدیو این چاقی را ببینید.
+                <?php 
+                $congratulations_text = get_option('oa_congratulations_text', 'بر اساس تست شما، شما تیپ {GROUP_NAME} هستید. لطفاً ویدیو این چاقی را ببینید.');
+                if (count($winning_groups_info) == 1) {
+                    $congratulations_text = str_replace('{GROUP_NAME}', $winning_groups_info[0]->name, $congratulations_text);
+                } else {
+                    $congratulations_text = str_replace('{GROUP_NAME}', 'چندگانه', $congratulations_text);
+                }
+                echo esc_html($congratulations_text);
+                ?>
             </p>
         </div>
         
         <!-- متن پیشنهاد تماشای ویدیو با فونت ریزتر -->
         <div class="oa-video-suggestion">
             <p class="oa-video-suggestion-text">
-                همچنین پیشنهاد می‌کنیم که همه ۹ ویدیو چاقی را هم ببینید تا اطلاعات کاملی در مورد انواع مختلف چاقی داشته باشید.
+                <?php echo esc_html(get_option('oa_video_suggestion_text', 'همچنین پیشنهاد می‌کنیم که همه ۹ ویدیو چاقی را هم ببینید تا اطلاعات کاملی در مورد انواع مختلف چاقی داشته باشید.')); ?>
             </p>
         </div>
     </div>
@@ -93,14 +95,14 @@ $total_score = array_sum($result['group_scores']);
                 <p class="oa-group-description"><?php echo esc_html($winning_groups_info[0]->description); ?></p>
                 
                 <div class="oa-group-tips">
-                    <h4>توصیه‌های تخصصی:</h4>
+                    <h4><?php echo esc_html(get_option('oa_tips_title', 'توصیه‌های تخصصی:')); ?></h4>
                     <p><?php echo esc_html($winning_groups_info[0]->tips); ?></p>
                 </div>
             </div>
             
             <?php if (!empty($winning_groups_info[0]->video_url)): ?>
             <div class="oa-video-container">
-                <h3 class="oa-video-title">ویدئوی آموزشی مربوط به دسته شما</h3>
+                <h3 class="oa-video-title"><?php echo esc_html(get_option('oa_video_title', 'ویدئوی آموزشی مربوط به دسته شما')); ?></h3>
                 <div class="oa-video-wrapper">
                     <video controls preload="metadata">
                         <source src="<?php echo esc_url($winning_groups_info[0]->video_url); ?>" type="video/mp4">
@@ -112,9 +114,9 @@ $total_score = array_sum($result['group_scores']);
             
         <?php else: ?>
             <div class="oa-group-info">
-                <h2 class="oa-group-name">شما عضو چند تیپ هستید</h2>
+                <h2 class="oa-group-name"><?php echo esc_html(get_option('oa_multiple_types_text', 'شما عضو چند تیپ هستید')); ?></h2>
                 <p class="oa-group-description">
-                    بر اساس پاسخ‌های شما، شما در دسته‌های زیر قرار می‌گیرید:
+                    <?php echo esc_html(get_option('oa_multiple_types_description', 'بر اساس پاسخ‌های شما، شما در دسته‌های زیر قرار می‌گیرید:')); ?>
                 </p>
                 
                 <?php foreach ($winning_groups_info as $group): ?>
@@ -123,7 +125,7 @@ $total_score = array_sum($result['group_scores']);
                     <p class="oa-group-description"><?php echo esc_html($group->description); ?></p>
                     
                     <div class="oa-group-tips">
-                        <h4>توصیه‌های تخصصی:</h4>
+                        <h4><?php echo esc_html(get_option('oa_tips_title', 'توصیه‌های تخصصی:')); ?></h4>
                         <p><?php echo esc_html($group->tips); ?></p>
                     </div>
                 </div>
@@ -131,7 +133,7 @@ $total_score = array_sum($result['group_scores']);
             </div>
             
             <div class="oa-video-container">
-                <h3 class="oa-video-title">ویدئوهای آموزشی مربوط به دسته‌های شما</h3>
+                <h3 class="oa-video-title"><?php echo esc_html(get_option('oa_video_title', 'ویدئوهای آموزشی مربوط به دسته‌های شما')); ?></h3>
                 <?php foreach ($winning_groups_info as $index => $group): ?>
                     <?php if (!empty($group->video_url)): ?>
                     <div style="margin-bottom: 30px;">
@@ -149,7 +151,7 @@ $total_score = array_sum($result['group_scores']);
         <?php endif; ?>
         
         <div class="oa-score-breakdown">
-            <h4>جزئیات امتیازات شما:</h4>
+            <h4><?php echo esc_html(get_option('oa_score_breakdown_title', 'جزئیات امتیازات شما:')); ?></h4>
             <?php 
             $all_groups = $wpdb->get_results("SELECT * FROM {$wpdb->prefix}oa_groups ORDER BY display_order");
             foreach ($all_groups as $group): 
@@ -163,17 +165,17 @@ $total_score = array_sum($result['group_scores']);
             <?php endforeach; ?>
             
             <div class="oa-score-item" style="border-top: 3px solid #667eea; margin-top: 20px; padding-top: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); font-size: 18px; font-weight: bold;">
-                <span class="oa-score-name">امتیاز کل</span>
+                <span class="oa-score-name"><?php echo esc_html(get_option('oa_total_score_text', 'امتیاز کل')); ?></span>
                 <span class="oa-score-value"><?php echo convertToPersianNumbers($total_score); ?> / <?php echo convertToPersianNumbers('108'); ?></span>
             </div>
         </div>
         
         <div class="oa-navigation-buttons">
             <a href="<?php echo home_url(); ?>" class="oa-btn oa-btn-secondary">
-                🏠 بازگشت به خانه
+                <?php echo esc_html(get_option('oa_home_button_text', '🏠 بازگشت به خانه')); ?>
             </a>
             <a href="<?php echo home_url('/تست-چاقی/'); ?>" class="oa-btn oa-btn-primary oa-btn-large">
-                🔄 تکرار تست
+                <?php echo esc_html(get_option('oa_retake_test_text', '🔄 تکرار تست')); ?>
             </a>
         </div>
     </div>

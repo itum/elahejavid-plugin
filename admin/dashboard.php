@@ -34,6 +34,7 @@ $recent_results = $wpdb->get_results("
             <button class="oa-admin-tab" data-tab="groups">گروه‌ها</button>
             <button class="oa-admin-tab" data-tab="questions">سوالات</button>
             <button class="oa-admin-tab" data-tab="results">نتایج</button>
+            <button class="oa-admin-tab" data-tab="settings">تنظیمات</button>
             <button class="oa-admin-tab" data-tab="help">راهنما</button>
         </div>
         
@@ -178,6 +179,137 @@ $recent_results = $wpdb->get_results("
             <div class="oa-table-container">
                 <!-- جدول نتایج توسط JavaScript بارگذاری می‌شود -->
             </div>
+        </div>
+        
+        <!-- تب تنظیمات -->
+        <div class="oa-tab-content" data-tab="settings">
+            <h3>تنظیمات عمومی</h3>
+            
+            <form class="oa-form" id="settings-form">
+                <!-- تنظیمات متن‌های نتیجه -->
+                <div class="oa-settings-section">
+                    <h4>📝 تنظیمات متن‌های صفحه نتیجه</h4>
+                    
+                    <div class="oa-form-group">
+                        <label for="congratulations_title">عنوان تبریک:</label>
+                        <input type="text" id="congratulations_title" name="congratulations_title" value="تبریک! 🎉">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="congratulations_text">متن تبریک (از کلمه 'بر اساس تست شما' تا 'هستید'):</label>
+                        <textarea id="congratulations_text" name="congratulations_text" rows="2">بر اساس تست شما، شما تیپ {GROUP_NAME} هستید. لطفاً ویدیو این چاقی را ببینید.</textarea>
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="video_suggestion_text">متن پیشنهاد تماشای ویدیو:</label>
+                        <textarea id="video_suggestion_text" name="video_suggestion_text" rows="2">همچنین پیشنهاد می‌کنیم که همه ۹ ویدیو چاقی را هم ببینید تا اطلاعات کاملی در مورد انواع مختلف چاقی داشته باشید.</textarea>
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="result_page_title">عنوان صفحه نتیجه:</label>
+                        <input type="text" id="result_page_title" name="result_page_title" value="نتیجه تست تشخیص چاقی">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="result_page_subtitle">زیرعنوان صفحه نتیجه:</label>
+                        <input type="text" id="result_page_subtitle" name="result_page_subtitle" value="بر اساس پاسخ‌های شما، نوع چاقی شما مشخص شد">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="video_title">عنوان بخش ویدیو:</label>
+                        <input type="text" id="video_title" name="video_title" value="ویدئوی آموزشی مربوط به دسته شما">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="tips_title">عنوان بخش توصیه‌ها:</label>
+                        <input type="text" id="tips_title" name="tips_title" value="توصیه‌های تخصصی:">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="score_breakdown_title">عنوان بخش جزئیات امتیازات:</label>
+                        <input type="text" id="score_breakdown_title" name="score_breakdown_title" value="جزئیات امتیازات شما:">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="total_score_text">متن امتیاز کل:</label>
+                        <input type="text" id="total_score_text" name="total_score_text" value="امتیاز کل">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="multiple_types_text">متن برای چند تیپ:</label>
+                        <input type="text" id="multiple_types_text" name="multiple_types_text" value="شما عضو چند تیپ هستید">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="multiple_types_description">توضیح برای چند تیپ:</label>
+                        <textarea id="multiple_types_description" name="multiple_types_description" rows="2">بر اساس پاسخ‌های شما، شما در دسته‌های زیر قرار می‌گیرید:</textarea>
+                    </div>
+                </div>
+                
+                <!-- تنظیمات ورود و احراز هویت -->
+                <div class="oa-settings-section">
+                    <h4>🔐 تنظیمات ورود و احراز هویت</h4>
+                    
+                    <div class="oa-form-group">
+                        <label>
+                            <input type="checkbox" id="enable_guest_access" name="enable_guest_access" checked>
+                            اجازه شرکت مهمان بدون ورود
+                        </label>
+                        <p class="oa-help-text">اگر فعال باشد، کاربران می‌توانند بدون ثبت‌نام یا ورود در تست شرکت کنند</p>
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label>
+                            <input type="checkbox" id="enable_digits_login" name="enable_digits_login">
+                            فعال‌سازی ورود با Digits
+                        </label>
+                        <p class="oa-help-text">اگر فعال باشد، کاربران باید با Digits وارد شوند تا بتوانند در تست شرکت کنند</p>
+                    </div>
+                    
+                    <div class="oa-form-group digits-settings" style="display: none;">
+                        <label for="digits_app_key">کلید برنامه Digits:</label>
+                        <input type="text" id="digits_app_key" name="digits_app_key" placeholder="کلید برنامه Digits را وارد کنید">
+                    </div>
+                    
+                    <div class="oa-form-group digits-settings" style="display: none;">
+                        <label for="digits_redirect_url">آدرس بازگشت Digits:</label>
+                        <input type="url" id="digits_redirect_url" name="digits_redirect_url" placeholder="آدرس بازگشت پس از ورود">
+                    </div>
+                    
+                    <div class="oa-form-group digits-settings" style="display: none;">
+                        <label for="digits_login_message">متن پیام ورود Digits:</label>
+                        <textarea id="digits_login_message" name="digits_login_message" rows="2" placeholder="متن پیامی که برای کاربران نمایش داده می‌شود">برای شرکت در تست باید وارد شوید. لطفاً با شماره موبایل خود وارد شوید.</textarea>
+                        <p class="oa-help-text">این متن برای کاربرانی که وارد نشده‌اند نمایش داده می‌شود</p>
+                    </div>
+                </div>
+                
+                <!-- تنظیمات عمومی -->
+                <div class="oa-settings-section">
+                    <h4>⚙️ تنظیمات عمومی</h4>
+                    
+                    <div class="oa-form-group">
+                        <label for="test_title">عنوان تست:</label>
+                        <input type="text" id="test_title" name="test_title" value="تست تشخیص نوع چاقی">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="test_description">توضیحات تست:</label>
+                        <textarea id="test_description" name="test_description" rows="3">این تست به شما کمک می‌کند تا نوع چاقی خود را شناسایی کرده و راهکارهای مناسب را دریافت کنید.</textarea>
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="home_button_text">متن دکمه بازگشت به خانه:</label>
+                        <input type="text" id="home_button_text" name="home_button_text" value="🏠 بازگشت به خانه">
+                    </div>
+                    
+                    <div class="oa-form-group">
+                        <label for="retake_test_text">متن دکمه تکرار تست:</label>
+                        <input type="text" id="retake_test_text" name="retake_test_text" value="🔄 تکرار تست">
+                    </div>
+                </div>
+                
+                <button type="submit" class="oa-btn oa-btn-primary">ذخیره تنظیمات</button>
+            </form>
         </div>
         
         <!-- تب راهنما -->
