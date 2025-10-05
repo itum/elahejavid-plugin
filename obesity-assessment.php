@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.19
+ * Version: 1.0.20
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages

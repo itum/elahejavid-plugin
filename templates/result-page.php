@@ -63,6 +63,27 @@ $total_score = array_sum($result['group_scores']);
     <div class="oa-result-header">
         <h1 class="oa-result-title">نتیجه تست تشخیص چاقی</h1>
         <p class="oa-result-subtitle">بر اساس پاسخ‌های شما، نوع چاقی شما مشخص شد</p>
+        
+        <!-- متن تبریک با فونت درشت -->
+        <div class="oa-congratulations">
+            <h2 class="oa-congratulations-title">تبریک! 🎉</h2>
+            <p class="oa-congratulations-text">
+                بر اساس تست شما، شما تیپ 
+                <?php if (count($winning_groups_info) == 1): ?>
+                    <strong><?php echo esc_html($winning_groups_info[0]->name); ?></strong>
+                <?php else: ?>
+                    <strong>چندگانه</strong>
+                <?php endif; ?>
+                هستید. لطفاً ویدیو این چاقی را ببینید.
+            </p>
+        </div>
+        
+        <!-- متن پیشنهاد تماشای ویدیو با فونت ریزتر -->
+        <div class="oa-video-suggestion">
+            <p class="oa-video-suggestion-text">
+                همچنین پیشنهاد می‌کنیم که همه ۹ ویدیو چاقی را هم ببینید تا اطلاعات کاملی در مورد انواع مختلف چاقی داشته باشید.
+            </p>
+        </div>
     </div>
     
     <div class="oa-result-content">
@@ -196,6 +217,58 @@ $total_score = array_sum($result['group_scores']);
     margin: 0;
     color: #666;
     line-height: 1.5;
+}
+
+/* استایل‌های متن تبریک با فونت درشت */
+.oa-congratulations {
+    margin: 25px 0;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(5px);
+}
+
+.oa-congratulations-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 15px 0;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    text-align: center;
+}
+
+.oa-congratulations-text {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    text-align: center;
+    line-height: 1.6;
+}
+
+.oa-congratulations-text strong {
+    color: #ffd700;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.4);
+}
+
+/* استایل‌های متن پیشنهاد ویدیو با فونت ریزتر */
+.oa-video-suggestion {
+    margin: 20px 0 0 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.oa-video-suggestion-text {
+    font-size: 14px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    line-height: 1.5;
+    font-style: italic;
 }
 
 .oa-result-content {
@@ -508,6 +581,21 @@ $total_score = array_sum($result['group_scores']);
         line-height: 1.4;
     }
     
+    .oa-congratulations-title {
+        font-size: 26px;
+        margin-bottom: 12px;
+    }
+    
+    .oa-congratulations-text {
+        font-size: 18px;
+        line-height: 1.5;
+    }
+    
+    .oa-video-suggestion-text {
+        font-size: 13px;
+        line-height: 1.4;
+    }
+    
     .oa-result-content {
         padding: 20px 15px;
     }
@@ -631,6 +719,21 @@ $total_score = array_sum($result['group_scores']);
         line-height: 1.3;
     }
     
+    .oa-congratulations-title {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+    
+    .oa-congratulations-text {
+        font-size: 16px;
+        line-height: 1.4;
+    }
+    
+    .oa-video-suggestion-text {
+        font-size: 12px;
+        line-height: 1.3;
+    }
+    
     .oa-result-content {
         padding: 15px 12px;
     }
@@ -728,6 +831,21 @@ $total_score = array_sum($result['group_scores']);
     
     .oa-result-subtitle {
         font-size: 13px;
+    }
+    
+    .oa-congratulations-title {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+    
+    .oa-congratulations-text {
+        font-size: 15px;
+        line-height: 1.3;
+    }
+    
+    .oa-video-suggestion-text {
+        font-size: 11px;
+        line-height: 1.2;
     }
     
     .oa-result-content {
