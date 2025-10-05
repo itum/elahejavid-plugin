@@ -37,6 +37,15 @@ jQuery(document).ready(function($) {
             }
         });
         
+        // رویداد کلیک روی کل کادر گزینه
+        $('.oa-option label').on('click', function(e) {
+            e.preventDefault();
+            const $radio = $(this).siblings('input[type="radio"]');
+            if (!$radio.prop('checked')) {
+                $radio.prop('checked', true).trigger('change');
+            }
+        });
+        
         // رویداد کلیک دکمه بعدی
         $('.oa-btn-next').on('click', function(e) {
             e.preventDefault();
@@ -205,10 +214,10 @@ jQuery(document).ready(function($) {
             e.preventDefault();
         }
         
-        $(this).closest('.oa-option').addClass('selected');
+        $(this).closest('.oa-option').addClass('oa-selected');
         
         setTimeout(() => {
-            $(this).closest('.oa-option').removeClass('selected');
+            $(this).closest('.oa-option').removeClass('oa-selected');
         }, 300);
     });
     

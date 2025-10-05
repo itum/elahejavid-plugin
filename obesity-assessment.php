@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.17
+ * Version: 1.0.19
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -286,21 +286,21 @@ class ObesityAssessment {
                 )
             ),
             array(
-                'question' => 'آیا علائم هورمونی (ریزش مو، خستگی، بی‌نظمی، آکنه، خواب) دارید؟',
+                'question' => 'آیا علائم دیگری که می‌تواند به اختلالات هورمونی مربوط باشد دارید؟ (مثلاً ریزش مو، خستگی دائمی، بی‌نظمی قاعدگی، آکنه یا مشکلات خواب)',
                 'options' => array(
-                    array('text' => 'هیچ', 'score' => 0),
-                    array('text' => 'گاهی یک یا دو مورد', 'score' => 1),
-                    array('text' => 'چند مورد همزمان', 'score' => 2),
-                    array('text' => 'بیشتر علائم به‌شدت', 'score' => 3)
+                    array('text' => 'هیچ‌کدام از این علائم را ندارم', 'score' => 0),
+                    array('text' => 'گاهی یک یا دو مورد را تجربه می‌کنم', 'score' => 1),
+                    array('text' => 'چند مورد از این علائم را همزمان دارم', 'score' => 2),
+                    array('text' => 'بیشتر این علائم را به‌شدت دارم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'سابقهٔ اختلالات هورمونی در خانواده دارید؟',
+                'question' => 'آیا در خانواده‌تان سابقه اختلالات هورمونی (سندرم تخمدان پلی کیستیک، PCOS، دیابت یا یائسگی زودرس مقاومت ب انسولین) وجود دارد؟',
                 'options' => array(
-                    array('text' => 'خیر', 'score' => 0),
+                    array('text' => 'خیر، هیچ‌کس چنین مشکلی ندارد', 'score' => 0),
                     array('text' => 'یکی از بستگان نزدیک', 'score' => 1),
                     array('text' => 'چند نفر از بستگان نزدیک', 'score' => 2),
-                    array('text' => 'بسیار شایع است', 'score' => 3)
+                    array('text' => 'این مشکل در خانواده بسیار شایع است', 'score' => 3)
                 )
             )
         );
@@ -310,39 +310,39 @@ class ObesityAssessment {
         // سوالات گروه 2: چاقی استرسی
         $group2_questions = array(
             array(
-                'question' => 'هنگام استرس، واکنش به غذا؟',
+                'question' => 'وقتی دچار استرس می‌شوید، معمولاً چه واکنشی نسبت به غذا خوردن دارید؟',
                 'options' => array(
-                    array('text' => 'هیچ تغییری نمی‌کنم', 'score' => 0),
-                    array('text' => 'کمی گرسنه‌تر می‌شوم', 'score' => 1),
-                    array('text' => 'سراغ تنقلات می‌روم', 'score' => 2),
-                    array('text' => 'بی‌اختیار می‌خورم', 'score' => 3)
+                    array('text' => 'هیچ تغییری نمی‌کنم و اشتهایم طبیعی است', 'score' => 0),
+                    array('text' => 'کمی احساس گرسنگی بیشتری می‌کنم', 'score' => 1),
+                    array('text' => 'اغلب به سراغ تنقلات و غذاهای شیرین یا شور می‌روم', 'score' => 2),
+                    array('text' => 'معمولاً بی‌اختیار و بدون کنترل شروع به خوردن می‌کنم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'سطح اضطراب روزانه؟',
+                'question' => 'در طول روز، سطح اضطراب و نگرانی شما چگونه است؟',
                 'options' => array(
-                    array('text' => 'به‌ندرت', 'score' => 0),
-                    array('text' => 'گهگاه', 'score' => 1),
-                    array('text' => 'بیشتر روزها', 'score' => 2),
-                    array('text' => 'تقریباً همیشه', 'score' => 3)
+                    array('text' => 'به‌ندرت دچار اضطراب می‌شوم', 'score' => 0),
+                    array('text' => 'گهگاه نگرانی‌های کوچک دارم', 'score' => 1),
+                    array('text' => 'بیشتر روزها احساس اضطراب یا تنش دارم', 'score' => 2),
+                    array('text' => 'تقریباً همیشه درگیر اضطراب، نگرانی یا استرس هستم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'تجمع چربی کجاست؟',
+                'question' => 'تجمع چربی در بدن شما بیشتر در کدام ناحیه است؟',
                 'options' => array(
-                    array('text' => 'سراسر بدن', 'score' => 0),
-                    array('text' => 'ران و باسن', 'score' => 1),
-                    array('text' => 'بیشتر شکم', 'score' => 2),
-                    array('text' => 'فقط شکم (سفت)', 'score' => 3)
+                    array('text' => 'به‌طور یکنواخت در سراسر بدنم', 'score' => 0),
+                    array('text' => 'عمدتاً در ران‌ها و باسن', 'score' => 1),
+                    array('text' => 'بیشتر در ناحیه شکم', 'score' => 2),
+                    array('text' => 'تقریباً فقط شکم، مخصوصاً شکم سفت و برجسته', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'واکنش بدن به رژیم؟',
+                'question' => 'واکنش بدن شما به رژیم‌های غذایی قبلی چگونه بوده است؟',
                 'options' => array(
-                    array('text' => 'راحت وزن کم می‌کنم', 'score' => 0),
-                    array('text' => 'با کمی سختی', 'score' => 1),
-                    array('text' => 'سریع استپ می‌کنم', 'score' => 2),
-                    array('text' => 'سخت وزن کم می‌کنم مخصوصاً هنگام استرس', 'score' => 3)
+                    array('text' => 'به‌راحتی وزن کم می‌کنم', 'score' => 0),
+                    array('text' => 'کاهش وزن دارم اما با کمی سختی', 'score' => 1),
+                    array('text' => 'کاهش وزن دارم اما سریع دچار استپ وزنی می‌شوم', 'score' => 2),
+                    array('text' => 'به‌سختی وزن کم می‌کنم، مخصوصاً وقتی تحت استرس هستم', 'score' => 3)
                 )
             )
         );
@@ -352,39 +352,39 @@ class ObesityAssessment {
         // سوالات گروه 3: چاقی متابولیک
         $group3_questions = array(
             array(
-                'question' => 'در چند ماه اخیر بدون تغییر رژیم چقدر وزن اضافه کردید؟',
+                'question' => 'در چند ماه اخیر، بدون تغییر قابل توجه در رژیم غذایی یا فعالیت، چه مقدار وزن اضافه کرده‌اید؟',
                 'options' => array(
-                    array('text' => 'هیچ', 'score' => 0),
-                    array('text' => '۱–۲ کیلو', 'score' => 1),
-                    array('text' => '۳–۵ کیلو', 'score' => 2),
-                    array('text' => 'بیش از ۵ کیلو', 'score' => 3)
+                    array('text' => 'هیچ‌گونه افزایشی نداشته‌ام', 'score' => 0),
+                    array('text' => 'کمی (۱–۲ کیلو)', 'score' => 1),
+                    array('text' => 'متوسط (۳–۵ کیلو)', 'score' => 2),
+                    array('text' => 'زیاد (بیش از ۵ کیلو)', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'میزان انرژی روزانه؟',
+                'question' => 'در طول روز چه میزان احساس خستگی یا کمبود انرژی دارید؟',
                 'options' => array(
-                    array('text' => 'طبیعی', 'score' => 0),
-                    array('text' => 'گاهی خستگی', 'score' => 1),
-                    array('text' => 'اغلب خسته', 'score' => 2),
-                    array('text' => 'همیشه خواب‌آلود', 'score' => 3)
+                    array('text' => 'انرژی کاملاً طبیعی و فعال هستم', 'score' => 0),
+                    array('text' => 'گاهی احساس خستگی دارم', 'score' => 1),
+                    array('text' => 'اغلب اوقات خسته هستم', 'score' => 2),
+                    array('text' => 'تقریباً همیشه کم‌انرژی و خواب‌آلودم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'آزمایش تیروئید؟',
+                'question' => 'آیا تاکنون آزمایش تیروئید داده‌اید یا پزشک شما اختلال تیروئید را تشخیص داده است؟',
                 'options' => array(
-                    array('text' => 'نه، مشکلی ندارم', 'score' => 0),
-                    array('text' => 'مشکوک ولی نرمال', 'score' => 1),
-                    array('text' => 'اختلال خفیف/متوسط', 'score' => 2),
-                    array('text' => 'اختلال شدید یا تحت درمان', 'score' => 3)
+                    array('text' => 'خیر، هیچ وقت آزمایش نداده‌ام و مشکلی ندارم', 'score' => 0),
+                    array('text' => 'کمی مشکوک بودم ولی آزمایشم نرمال بود', 'score' => 1),
+                    array('text' => 'بله، اختلال خفیف یا متوسط تشخیص داده شده', 'score' => 2),
+                    array('text' => 'بله، اختلال تیروئید شدید یا تحت درمان هستم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'کاهش وزن با رژیم چقدر دشوار است؟',
+                'question' => 'وقتی رژیم یا ورزش می‌کنید، کاهش وزن چقدر برایتان دشوار است؟',
                 'options' => array(
-                    array('text' => 'راحت', 'score' => 0),
-                    array('text' => 'کمی سخت', 'score' => 1),
-                    array('text' => 'بسیار سخت', 'score' => 2),
-                    array('text' => 'تقریباً غیرممکن', 'score' => 3)
+                    array('text' => 'به راحتی وزن کم می‌کنم', 'score' => 0),
+                    array('text' => 'کمی سخت است ولی ممکن', 'score' => 1),
+                    array('text' => 'بسیار دشوار است و کم کاهش می‌یابد', 'score' => 2),
+                    array('text' => 'تقریباً هیچ کاهش وزنی ندارم', 'score' => 3)
                 )
             )
         );
@@ -394,39 +394,39 @@ class ObesityAssessment {
         // سوالات گروه 4: چاقی احساسی
         $group4_questions = array(
             array(
-                'question' => 'هنگام ناراحتی، تمایل به غذا؟',
+                'question' => 'وقتی ناراحت، عصبی یا تحت فشار هستید، چقدر به غذا خوردن تمایل پیدا می‌کنید؟',
                 'options' => array(
-                    array('text' => 'اصلاً', 'score' => 0),
-                    array('text' => 'کمی بیشتر', 'score' => 1),
-                    array('text' => 'سراغ غذاهای خاص', 'score' => 2),
-                    array('text' => 'تقریباً همیشه پرخوری', 'score' => 3)
+                    array('text' => 'اصلاً تغییری نمی‌کنه', 'score' => 0),
+                    array('text' => 'کمی بیشتر از حالت عادی می‌خورم', 'score' => 1),
+                    array('text' => 'معمولاً سراغ غذاهای خاصی می‌روم', 'score' => 2),
+                    array('text' => 'تقریباً همیشه در این مواقع پرخوری می‌کنم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'در خستگی یا استرس میل به خوراکی خاص؟',
+                'question' => 'در زمان خستگی یا استرس، چقدر میل شدیدی به خوردن خوراکی‌های خاص (مثل شیرینی، شکلات، فست‌فود یا نوشابه) پیدا می‌کنید؟',
                 'options' => array(
-                    array('text' => 'هیچ', 'score' => 0),
-                    array('text' => 'گاهی', 'score' => 1),
-                    array('text' => 'اغلب زیاد', 'score' => 2),
-                    array('text' => 'همیشه مقاومت سخت', 'score' => 3)
+                    array('text' => 'هیچ تمایلی ندارم', 'score' => 0),
+                    array('text' => 'گاهی کمی هوس می‌کنم', 'score' => 1),
+                    array('text' => 'اغلب اوقات هوس شدید دارم', 'score' => 2),
+                    array('text' => 'تقریباً همیشه نمی‌توانم در برابر این خوراکی‌ها مقاومت کنم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'بعد از پرخوری احساسی؟',
+                'question' => 'بعد از پرخوری ناشی از احساسات، چه حسی دارید؟',
                 'options' => array(
-                    array('text' => 'عادی', 'score' => 0),
-                    array('text' => 'پشیمانی کم', 'score' => 1),
-                    array('text' => 'سنگینی شدید', 'score' => 2),
-                    array('text' => 'تصمیم رژیم سخت و شکست', 'score' => 3)
+                    array('text' => 'احساس خاصی ندارم، عادیه', 'score' => 0),
+                    array('text' => 'کمی پشیمانی یا عذاب وجدان', 'score' => 1),
+                    array('text' => 'احساس سنگینی و ناراحتی شدید', 'score' => 2),
+                    array('text' => 'علاوه بر پشیمانی، تصمیم می‌گیرم رژیم سختی بگیرم اما شکست می‌خورم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'آیا مطمئنید گرسنگی واقعی دارید؟',
+                'question' => 'وقتی به سمت غذا می‌روید، چقدر مطمئن هستید که واقعاً گرسنه‌اید و نه صرفاً برای آرام شدن غذا می‌خورید؟',
                 'options' => array(
-                    array('text' => 'همیشه', 'score' => 0),
-                    array('text' => 'بیشتر اوقات', 'score' => 1),
-                    array('text' => 'اغلب اشتها احساسی است', 'score' => 2),
-                    array('text' => 'همیشه اشتباه تشخیص می‌دهم', 'score' => 3)
+                    array('text' => 'همیشه مطمئنم و فقط در زمان گرسنگی می‌خورم', 'score' => 0),
+                    array('text' => 'بیشتر اوقات متوجه تفاوت گرسنگی و هوس می‌شوم', 'score' => 1),
+                    array('text' => 'اغلب اوقات اشتهایم از احساسات می‌آید نه گرسنگی واقعی', 'score' => 2),
+                    array('text' => 'تقریباً همیشه نمی‌توانم این دو را از هم تشخیص دهم', 'score' => 3)
                 )
             )
         );
@@ -436,39 +436,39 @@ class ObesityAssessment {
         // سوالات گروه 5: چاقی ژنتیکی
         $group5_questions = array(
             array(
-                'question' => 'از چه سنی اضافه‌وزن شروع شد؟',
+                'question' => 'از چه سنی اضافه وزن یا چاقی برایتان شروع شد؟',
                 'options' => array(
-                    array('text' => 'بزرگسالی', 'score' => 0),
-                    array('text' => 'نوجوانی', 'score' => 1),
-                    array('text' => 'کودکی', 'score' => 2),
-                    array('text' => 'کودکی شدید و تداوم', 'score' => 3)
+                    array('text' => 'در بزرگسالی', 'score' => 0),
+                    array('text' => 'در نوجوانی', 'score' => 1),
+                    array('text' => 'از کودکی', 'score' => 2),
+                    array('text' => 'از کودکی با شدت بالا و ادامه تا بزرگسالی', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'سابقه خانوادگی؟',
+                'question' => 'آیا در خانواده شما (والدین، خواهر/برادر) چاقی یا اضافه وزن شدید وجود دارد؟',
                 'options' => array(
-                    array('text' => 'خیر', 'score' => 0),
-                    array('text' => 'یک نفر', 'score' => 1),
-                    array('text' => 'چند نفر', 'score' => 2),
-                    array('text' => 'بیشتر خانواده', 'score' => 3)
+                    array('text' => 'خیر، هیچ‌کس چاق نیست', 'score' => 0),
+                    array('text' => 'یکی از اعضای نزدیک خانواده', 'score' => 1),
+                    array('text' => 'چند نفر از اعضای نزدیک', 'score' => 2),
+                    array('text' => 'بیشتر خانواده چاق یا اضافه وزن دارند', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'دشواری کاهش وزن؟',
+                'question' => 'چقدر کاهش وزن برایتان دشوار است؟',
                 'options' => array(
-                    array('text' => 'راحت', 'score' => 0),
-                    array('text' => 'کمی سخت', 'score' => 1),
-                    array('text' => 'بسیار سخت', 'score' => 2),
-                    array('text' => 'غیرممکن', 'score' => 3)
+                    array('text' => 'به راحتی وزن کم می‌کنم', 'score' => 0),
+                    array('text' => 'کمی سخت است', 'score' => 1),
+                    array('text' => 'بسیار سخت است و کاهش وزن کند است', 'score' => 2),
+                    array('text' => 'تقریباً غیرممکن است', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'کندی متابولیسم؟',
+                'question' => 'آیا احساس می‌کنید متابولیسم یا سوخت و ساز بدن شما کند است و انرژی کمتری نسبت به دیگران دارید؟',
                 'options' => array(
-                    array('text' => 'طبیعی', 'score' => 0),
-                    array('text' => 'کمی کمتر', 'score' => 1),
-                    array('text' => 'اغلب کند', 'score' => 2),
-                    array('text' => 'همیشه کند', 'score' => 3)
+                    array('text' => 'کاملاً طبیعی و فعال هستم', 'score' => 0),
+                    array('text' => 'کمی کمتر از دیگران', 'score' => 1),
+                    array('text' => 'اغلب احساس کم‌انرژی و کندی دارم', 'score' => 2),
+                    array('text' => 'تقریباً همیشه بدنم کند است و انرژی پایینی دارم', 'score' => 3)
                 )
             )
         );
@@ -478,39 +478,39 @@ class ObesityAssessment {
         // سوالات گروه 6: چاقی یویویی
         $group6_questions = array(
             array(
-                'question' => 'چند بار کاهش و بازگشت وزن؟',
+                'question' => 'چند بار در طول زندگی‌تان کاهش وزن زیاد (بیش از ۵ کیلوگرم) و بازگشت آن را تجربه کرده‌اید؟',
                 'options' => array(
-                    array('text' => 'هیچ', 'score' => 0),
+                    array('text' => 'هیچ‌وقت', 'score' => 0),
                     array('text' => 'یک بار', 'score' => 1),
-                    array('text' => '۲–۳ بار', 'score' => 2),
-                    array('text' => 'بیش از ۳ بار', 'score' => 3)
+                    array('text' => 'دو تا سه بار', 'score' => 2),
+                    array('text' => 'بیش از سه بار', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'علت اضافه‌وزن فعلی؟',
+                'question' => 'دلیل شروع اضافه‌وزن فعلی شما چه بوده است؟',
                 'options' => array(
-                    array('text' => 'از بچگی چاق', 'score' => 0),
-                    array('text' => 'تغییر سبک زندگی', 'score' => 1),
-                    array('text' => 'بارداری/دارو/بیماری', 'score' => 2),
-                    array('text' => 'رژیم‌های متعدد', 'score' => 3)
+                    array('text' => 'از بچگی همیشه چاق بودم', 'score' => 0),
+                    array('text' => 'تغییر سبک زندگی یا تغذیه', 'score' => 1),
+                    array('text' => 'بارداری، دارو یا بیماری خاص', 'score' => 2),
+                    array('text' => 'رژیم‌های متعدد و برگشت وزن', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'بعد از کاهش وزن چقدر زود برمی‌گردد؟',
+                'question' => 'هنگام کاهش وزن، بعد از چند وقت به استاپ وزنی یا برگشت وزن می‌رسید؟',
                 'options' => array(
-                    array('text' => 'برنگشته', 'score' => 0),
-                    array('text' => 'چند ماه', 'score' => 1),
-                    array('text' => 'چند هفته', 'score' => 2),
-                    array('text' => 'خیلی زود', 'score' => 3)
+                    array('text' => 'استاپ یا برگشت نداشتم', 'score' => 0),
+                    array('text' => 'بعد از چند ماه', 'score' => 1),
+                    array('text' => 'بعد از چند هفته', 'score' => 2),
+                    array('text' => 'خیلی زود یا بلافاصله', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'احساس هنگام بازگشت وزن؟',
+                'question' => 'وقتی وزنتان برمی‌گردد، احساس شما چطور است؟',
                 'options' => array(
-                    array('text' => 'بی‌اهمیت', 'score' => 0),
-                    array('text' => 'ناراحت ولی ادامه', 'score' => 1),
-                    array('text' => 'ناامیدی', 'score' => 2),
-                    array('text' => 'رها کردن', 'score' => 3)
+                    array('text' => 'خیلی برام مهم نیست', 'score' => 0),
+                    array('text' => 'ناراحت می‌شم ولی ادامه می‌دم', 'score' => 1),
+                    array('text' => 'احساس ناامیدی می‌کنم', 'score' => 2),
+                    array('text' => 'کلاً بی‌خیال رژیم یا ورزش می‌شم', 'score' => 3)
                 )
             )
         );
@@ -520,39 +520,39 @@ class ObesityAssessment {
         // سوالات گروه 7: چاقی بی‌تحرکی
         $group7_questions = array(
             array(
-                'question' => 'فعالیت روزانه؟',
+                'question' => 'در طول روز، چقدر زمان شما صرف فعالیت فیزیکی (پیاده‌روی، ورزش، کار بدنی) می‌شود؟',
                 'options' => array(
-                    array('text' => 'بیش از ۱ ساعت', 'score' => 0),
-                    array('text' => 'حدود ۳۰ دقیقه', 'score' => 1),
-                    array('text' => 'کمتر از ۳۰ دقیقه', 'score' => 2),
-                    array('text' => 'تقریباً هیچ', 'score' => 3)
+                    array('text' => 'بیش از ۱ ساعت فعال هستم', 'score' => 0),
+                    array('text' => 'حدود ۳۰ دقیقه فعالیت دارم', 'score' => 1),
+                    array('text' => 'کمتر از ۳۰ دقیقه فعال هستم', 'score' => 2),
+                    array('text' => 'تقریباً هیچ فعالیت بدنی ندارم', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'زمان نشستن روزانه؟',
+                'question' => 'در روز چه مقدار وقت خود را به صورت نشسته می‌گذرانید؟ (کار، تلویزیون، موبایل)',
                 'options' => array(
-                    array('text' => '<۲ ساعت', 'score' => 0),
-                    array('text' => '۲–۴ ساعت', 'score' => 1),
-                    array('text' => '۴–۶ ساعت', 'score' => 2),
-                    array('text' => '>۶ ساعت', 'score' => 3)
+                    array('text' => 'کمتر از ۲ ساعت', 'score' => 0),
+                    array('text' => '۲ تا ۴ ساعت', 'score' => 1),
+                    array('text' => '۴ تا ۶ ساعت', 'score' => 2),
+                    array('text' => 'بیش از ۶ ساعت', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'تأثیر کم‌تحرکی؟',
+                'question' => 'چقدر احساس می‌کنید سبک زندگی کم‌تحرک بر افزایش وزن شما اثر گذاشته است؟',
                 'options' => array(
-                    array('text' => 'هیچ', 'score' => 0),
-                    array('text' => 'کم', 'score' => 1),
-                    array('text' => 'زیاد', 'score' => 2),
-                    array('text' => 'عامل اصلی', 'score' => 3)
+                    array('text' => 'اصلاً تأثیری نداشته', 'score' => 0),
+                    array('text' => 'کمی تأثیر داشته', 'score' => 1),
+                    array('text' => 'تأثیر قابل توجهی داشته', 'score' => 2),
+                    array('text' => 'عامل اصلی افزایش وزن من است', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'فعالیت روزانه (تکرار)؟',
+                'question' => 'آیا احساس می‌کنید که کم‌تحرکی باعث کاهش انرژی و انگیزه شما برای فعالیت‌های بدنی شده است؟',
                 'options' => array(
-                    array('text' => 'بیش از ۱ ساعت', 'score' => 0),
-                    array('text' => 'حدود ۳۰ دقیقه', 'score' => 1),
-                    array('text' => 'کمتر از ۳۰ دقیقه', 'score' => 2),
-                    array('text' => 'تقریباً هیچ', 'score' => 3)
+                    array('text' => 'اصلاً، انرژی و انگیزه کافی دارم', 'score' => 0),
+                    array('text' => 'کمی احساس کم‌انرژی می‌کنم', 'score' => 1),
+                    array('text' => 'اغلب احساس کم‌انرژی و بی‌انگیزه‌ام', 'score' => 2),
+                    array('text' => 'همیشه احساس کم‌انرژی و بی‌انگیزه‌ام', 'score' => 3)
                 )
             )
         );
@@ -562,39 +562,39 @@ class ObesityAssessment {
         // سوالات گروه 8: چاقی عادتی
         $group8_questions = array(
             array(
-                'question' => 'غذا بدون گرسنگی؟',
+                'question' => 'چقدر اغلب بدون اینکه واقعاً گرسنه باشید، غذا یا تنقلات می‌خورید؟',
+                'options' => array(
+                    array('text' => 'اصلاً چنین کاری نمی‌کنم', 'score' => 0),
+                    array('text' => 'گاهی اوقات', 'score' => 1),
+                    array('text' => 'اغلب اوقات', 'score' => 2),
+                    array('text' => 'تقریباً همیشه', 'score' => 3)
+                )
+            ),
+            array(
+                'question' => 'چقدر هنگام تماشای تلویزیون، موبایل یا کار با کامپیوتر غذا می‌خورید؟',
                 'options' => array(
                     array('text' => 'اصلاً', 'score' => 0),
                     array('text' => 'گاهی', 'score' => 1),
                     array('text' => 'اغلب', 'score' => 2),
-                    array('text' => 'همیشه', 'score' => 3)
+                    array('text' => 'تقریباً همیشه', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'غذا هنگام تلویزیون/موبایل؟',
+                'question' => 'معمولاً چه سرعتی غذا می‌خورید؟',
                 'options' => array(
-                    array('text' => 'اصلاً', 'score' => 0),
-                    array('text' => 'گاهی', 'score' => 1),
-                    array('text' => 'اغلب', 'score' => 2),
-                    array('text' => 'همیشه', 'score' => 3)
+                    array('text' => 'خیلی آرام و با تمرکز', 'score' => 0),
+                    array('text' => 'معمولی، نه خیلی سریع', 'score' => 1),
+                    array('text' => 'کمی سریع و بدون تمرکز', 'score' => 2),
+                    array('text' => 'خیلی سریع و بدون توجه به حجم غذا', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'سرعت غذا خوردن؟',
+                'question' => 'چقدر وعده‌های غذایی خود را دیر یا نامنظم مصرف می‌کنید؟',
                 'options' => array(
-                    array('text' => 'خیلی آرام', 'score' => 0),
-                    array('text' => 'معمولی', 'score' => 1),
-                    array('text' => 'کمی سریع', 'score' => 2),
-                    array('text' => 'خیلی سریع', 'score' => 3)
-                )
-            ),
-            array(
-                'question' => 'نظم وعده‌ها؟',
-                'options' => array(
-                    array('text' => 'منظم', 'score' => 0),
-                    array('text' => 'گاهی نامنظم', 'score' => 1),
-                    array('text' => 'اغلب نامنظم', 'score' => 2),
-                    array('text' => 'همیشه نامنظم', 'score' => 3)
+                    array('text' => 'همیشه وعده‌ها را سر وقت و منظم می‌خورم', 'score' => 0),
+                    array('text' => 'گاهی نامنظم می‌خورم', 'score' => 1),
+                    array('text' => 'اغلب وعده‌هایم نامنظم است', 'score' => 2),
+                    array('text' => 'تقریباً همیشه وعده‌هایم نامنظم و دیر است', 'score' => 3)
                 )
             )
         );
@@ -604,39 +604,39 @@ class ObesityAssessment {
         // سوالات گروه 9: چاقی ترکیبی
         $group9_questions = array(
             array(
-                'question' => 'بیشتر از نیاز روزانه غذا می‌خورید؟',
+                'question' => 'چقدر اغلب بیش از نیاز روزانه خود غذا می‌خورید؟',
                 'options' => array(
                     array('text' => 'اصلاً', 'score' => 0),
                     array('text' => 'گاهی', 'score' => 1),
                     array('text' => 'اغلب', 'score' => 2),
-                    array('text' => 'همیشه', 'score' => 3)
+                    array('text' => 'تقریباً همیشه', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'تمایل به فست‌فود/شیرینی؟',
+                'question' => 'چقدر تمایل دارید غذاهای پرچرب، شیرین یا فست‌فود مصرف کنید؟',
                 'options' => array(
-                    array('text' => 'خیلی کم', 'score' => 0),
+                    array('text' => 'خیلی کم یا اصلاً', 'score' => 0),
                     array('text' => 'گاهی', 'score' => 1),
                     array('text' => 'اغلب', 'score' => 2),
-                    array('text' => 'همیشه', 'score' => 3)
+                    array('text' => 'تقریباً همیشه', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'علت اصلی چاقی؟',
+                'question' => 'به نظر شما علت اصلی افزایش وزن شما چیست؟',
                 'options' => array(
-                    array('text' => 'فقط کم‌تحرکی', 'score' => 0),
-                    array('text' => 'فقط عادات غذایی', 'score' => 1),
-                    array('text' => 'ترکیب دو عامل', 'score' => 2),
-                    array('text' => 'ترکیب چند عامل', 'score' => 3)
+                    array('text' => 'فقط سبک زندگی کم‌تحرک', 'score' => 0),
+                    array('text' => 'فقط عادات غذایی نادرست', 'score' => 1),
+                    array('text' => 'ترکیبی از دو عامل (فعالیت کم + عادات غذایی)', 'score' => 2),
+                    array('text' => 'ترکیبی از چند عامل (فعالیت کم، عادات غذایی، استرس، هورمون و غیره)', 'score' => 3)
                 )
             ),
             array(
-                'question' => 'دشواری کاهش وزن؟',
+                'question' => 'چقدر کاهش وزن برایتان دشوار است؟',
                 'options' => array(
-                    array('text' => 'راحت', 'score' => 0),
-                    array('text' => 'کمی سخت', 'score' => 1),
-                    array('text' => 'سخت', 'score' => 2),
-                    array('text' => 'غیرممکن', 'score' => 3)
+                    array('text' => 'راحت وزن کم می‌کنم', 'score' => 0),
+                    array('text' => 'کمی سخت است', 'score' => 1),
+                    array('text' => 'بسیار سخت است', 'score' => 2),
+                    array('text' => 'تقریباً غیرممکن است', 'score' => 3)
                 )
             )
         );
