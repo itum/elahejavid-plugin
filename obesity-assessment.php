@@ -51,6 +51,7 @@ class ObesityAssessment {
         add_shortcode('obesity_assessment', array($this, 'quiz_shortcode'));
         add_shortcode('oa_quiz_all', array($this, 'quiz_all_shortcode'));
         add_shortcode('oa_flush_rules', array($this, 'flush_rules_shortcode'));
+        add_shortcode('oa_update_questions', array($this, 'update_questions_shortcode'));
         
         // اضافه کردن منوی سایت
         add_action('wp_nav_menu_items', array($this, 'add_menu_item'), 10, 2);
@@ -74,6 +75,7 @@ class ObesityAssessment {
     public function activate() {
         $this->create_tables();
         $this->populate_default_data();
+        $this->update_questions_from_seeder();
         $this->add_rewrite_rules();
         flush_rewrite_rules();
     }
@@ -675,6 +677,23 @@ class ObesityAssessment {
         $this->insert_group_questions(9, $group9_questions);
     }
     
+    private function update_questions_from_seeder() {
+        global $wpdb;
+        
+        // بررسی وجود داده
+        $existing_groups = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_groups");
+        if ($existing_groups == 0) {
+            return; // اگر داده‌ای وجود ندارد، نیازی به به‌روزرسانی نیست
+        }
+        
+        // حذف سوالات و گزینه‌های موجود
+        $wpdb->query("DELETE FROM {$wpdb->prefix}oa_options");
+        $wpdb->query("DELETE FROM {$wpdb->prefix}oa_questions");
+        
+        // درج مجدد سوالات از seeder
+        $this->insert_questions_and_options();
+    }
+    
     private function insert_group_questions($group_id, $questions) {
         global $wpdb;
         
@@ -1030,6 +1049,15 @@ class ObesityAssessment {
         
         $this->flush_rewrite_rules_now();
         return '<p style="color: green;">Rewrite rules با موفقیت بازنشانی شد!</p>';
+    }
+    
+    public function update_questions_shortcode($atts) {
+        if (!current_user_can('manage_options')) {
+            return '<p>شما دسترسی لازم را ندارید.</p>';
+        }
+        
+        $this->update_questions_from_seeder();
+        return '<p style="color: green;">سوالات با موفقیت به‌روزرسانی شدند!</p>';
     }
 }
 
