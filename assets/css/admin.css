@@ -15,43 +15,6 @@
 .oa-warning-box strong {
     color: #d63031;
 }
-
-/* استایل‌های فیلد ویدیو */
-.oa-video-input-container {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-}
-
-.oa-video-input-container input[type="url"] {
-    flex: 1;
-}
-
-.oa-video-preview {
-    margin-top: 15px;
-    padding: 15px;
-    background: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-}
-
-.oa-video-preview video {
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.oa-video-info {
-    margin-top: 10px;
-    font-size: 14px;
-    color: #6c757d;
-}
-
-.oa-help-text {
-    font-size: 13px;
-    color: #6c757d;
-    margin-top: 8px;
-    line-height: 1.4;
-}
 .oa-admin-container {
     direction: rtl;
     text-align: right;
