@@ -13,9 +13,10 @@ jQuery(document).ready(function($) {
     
     // مقداردهی اولیه
     function init() {
-        // تب‌ها
-        $('.oa-admin-tab').on('click', function() {
+        // تب‌ها - استفاده از delegated event
+        $(document).on('click', '.oa-admin-tab', function() {
             const tabId = $(this).data('tab');
+            console.log('Tab clicked:', tabId);
             switchTab(tabId);
         });
         
@@ -135,13 +136,20 @@ jQuery(document).ready(function($) {
     
     // تغییر تب
     function switchTab(tabId) {
+        console.log('Switching to tab:', tabId);
+        
+        // حذف کلاس active از همه تب‌ها
         $('.oa-admin-tab').removeClass('active');
+        // اضافه کردن کلاس active به تب انتخاب شده
         $('.oa-admin-tab[data-tab="' + tabId + '"]').addClass('active');
         
+        // حذف کلاس active از همه محتواها
         $('.oa-tab-content').removeClass('active');
+        // اضافه کردن کلاس active به محتوای تب انتخاب شده
         $('.oa-tab-content[data-tab="' + tabId + '"]').addClass('active');
         
         currentTab = tabId;
+        console.log('Current tab set to:', currentTab);
         
         // بارگذاری داده‌های تب
         loadTabData(tabId);
@@ -757,8 +765,13 @@ jQuery(document).ready(function($) {
         }, 2000);
     }
     
-    // شروع افزونه
-    init();
+    // شروع افزونه - منتظر آماده شدن DOM
+    $(document).ready(function() {
+        console.log('DOM is ready, initializing plugin...');
+        console.log('Found tabs:', $('.oa-admin-tab').length);
+        console.log('Found tab contents:', $('.oa-tab-content').length);
+        init();
+    });
     
     // تابع مشاهده نتیجه (برای استفاده در HTML)
     window.viewResult = function(resultId) {
@@ -963,4 +976,4 @@ jQuery(document).ready(function($) {
         }
     }
     
-});
+}); // پایان jQuery(document).ready
