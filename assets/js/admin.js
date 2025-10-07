@@ -35,9 +35,19 @@ jQuery(document).ready(function($) {
             openMediaLibrary();
         });
         
+        // مدیریت انتخاب ویدیو در مودال ویرایش
+        $(document).on('click', '#edit-select-video-btn', function() {
+            openEditMediaLibrary();
+        });
+        
         // مدیریت تغییر لینک ویدیو
         $(document).on('input', '#group_video', function() {
             updateVideoPreview();
+        });
+        
+        // مدیریت تغییر لینک ویدیو در مودال ویرایش
+        $(document).on('input', '#edit_group_video', function() {
+            updateEditVideoPreview();
         });
         
         // دکمه‌های حذف و ویرایش (delegated events)
@@ -571,7 +581,20 @@ jQuery(document).ready(function($) {
                 
                 <div class="oa-form-group">
                     <label for="edit_group_video">لینک ویدیو:</label>
-                    <input type="url" id="edit_group_video" name="video_url" value="${escapeHtml(data.video_url || '')}" placeholder="https://example.com/video.mp4">
+                    <div class="oa-video-input-container">
+                        <input type="url" id="edit_group_video" name="video_url" value="${escapeHtml(data.video_url || '')}" placeholder="لینک آپارات، ویدیو مستقیم یا انتخاب از کتابخانه">
+                        <button type="button" id="edit-select-video-btn" class="oa-btn oa-btn-secondary">انتخاب ویدیو</button>
+                    </div>
+                    <div class="oa-video-preview" id="edit-video-preview" style="display: none;">
+                        <video controls style="max-width: 300px; max-height: 200px;">
+                            <source id="edit-video-source" src="" type="video/mp4">
+                            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                        </video>
+                        <p class="oa-video-info" id="edit-video-info"></p>
+                    </div>
+                    <p class="oa-help-text">
+                        می‌توانید لینک آپارات، لینک مستقیم ویدیو وارد کنید یا از دکمه "انتخاب ویدیو" برای انتخاب از کتابخانه وردپرس استفاده کنید.
+                    </p>
                 </div>
                 
                 <button type="submit" class="oa-btn oa-btn-primary">ذخیره تغییرات</button>
@@ -609,6 +632,13 @@ jQuery(document).ready(function($) {
         $form.html(formHtml);
         $form.data('edit-id', data.id);
         $form.data('edit-type', type);
+        
+        // اگر نوع گروه است و ویدیو دارد، پیش‌نمایش را نمایش بده
+        if (type === 'group' && data.video_url) {
+            setTimeout(function() {
+                updateEditVideoPreview();
+            }, 100);
+        }
         
         console.log('Edit modal populated successfully');
     }
@@ -876,6 +906,61 @@ jQuery(document).ready(function($) {
             return 'https://www.aparat.com/video/video/embed/videohash/' + match[1];
         }
         return url;
+    }
+    
+    // توابع مخصوص مودال ویرایش
+    function openEditMediaLibrary() {
+        if (typeof wp !== 'undefined' && wp.media) {
+            const frame = wp.media({
+                title: 'انتخاب ویدیو',
+                button: {
+                    text: 'انتخاب ویدیو'
+                },
+                library: {
+                    type: 'video'
+                },
+                multiple: false
+            });
+            
+            frame.on('select', function() {
+                const attachment = frame.state().get('selection').first().toJSON();
+                $('#edit_group_video').val(attachment.url);
+                updateEditVideoPreview();
+            });
+            
+            frame.open();
+        } else {
+            alert('کتابخانه رسانه وردپرس در دسترس نیست.');
+        }
+    }
+    
+    function updateEditVideoPreview() {
+        const videoUrl = $('#edit_group_video').val();
+        const preview = $('#edit-video-preview');
+        const videoSource = $('#edit-video-source');
+        const videoInfo = $('#edit-video-info');
+        
+        if (videoUrl) {
+            // بررسی نوع لینک
+            if (isAparatUrl(videoUrl)) {
+                // برای آپارات، لینک embed را ایجاد می‌کنیم
+                const embedUrl = convertAparatToEmbed(videoUrl);
+                videoSource.attr('src', embedUrl);
+                videoInfo.text('ویدیو آپارات: ' + videoUrl);
+            } else if (isDirectVideoUrl(videoUrl)) {
+                // برای ویدیو مستقیم
+                videoSource.attr('src', videoUrl);
+                videoInfo.text('ویدیو مستقیم: ' + videoUrl);
+            } else {
+                // لینک نامعتبر
+                videoInfo.text('لینک نامعتبر: ' + videoUrl);
+                videoSource.attr('src', '');
+            }
+            
+            preview.show();
+        } else {
+            preview.hide();
+        }
     }
     
 });
