@@ -139,7 +139,20 @@ $recent_results = $wpdb->get_results("
                 
                 <div class="oa-form-group">
                     <label for="group_video">لینک ویدیو:</label>
-                    <input type="url" id="group_video" name="video_url" placeholder="https://example.com/video.mp4">
+                    <div class="oa-video-input-container">
+                        <input type="url" id="group_video" name="video_url" placeholder="لینک آپارات، ویدیو مستقیم یا انتخاب از کتابخانه">
+                        <button type="button" id="select-video-btn" class="oa-btn oa-btn-secondary">انتخاب ویدیو</button>
+                    </div>
+                    <div class="oa-video-preview" id="video-preview" style="display: none;">
+                        <video controls style="max-width: 300px; max-height: 200px;">
+                            <source id="video-source" src="" type="video/mp4">
+                            مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+                        </video>
+                        <p class="oa-video-info" id="video-info"></p>
+                    </div>
+                    <p class="oa-help-text">
+                        می‌توانید لینک آپارات، لینک مستقیم ویدیو وارد کنید یا از دکمه "انتخاب ویدیو" برای انتخاب از کتابخانه وردپرس استفاده کنید.
+                    </p>
                 </div>
                 
                 <button type="submit" class="oa-btn oa-btn-primary">ذخیره گروه</button>

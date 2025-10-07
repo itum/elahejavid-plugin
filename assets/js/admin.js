@@ -30,6 +30,16 @@ jQuery(document).ready(function($) {
             toggleDigitsSettings();
         });
         
+        // مدیریت انتخاب ویدیو
+        $(document).on('click', '#select-video-btn', function() {
+            openMediaLibrary();
+        });
+        
+        // مدیریت تغییر لینک ویدیو
+        $(document).on('input', '#group_video', function() {
+            updateVideoPreview();
+        });
+        
         // دکمه‌های حذف و ویرایش (delegated events)
         $(document).on('click', '.oa-btn-delete', function(e) {
             e.preventDefault();
@@ -792,4 +802,80 @@ jQuery(document).ready(function($) {
                 document.body.removeChild(textArea);
             }
         });
+    });
+    
+    // توابع مدیریت ویدیو
+    function openMediaLibrary() {
+        if (typeof wp !== 'undefined' && wp.media) {
+            const frame = wp.media({
+                title: 'انتخاب ویدیو',
+                button: {
+                    text: 'انتخاب ویدیو'
+                },
+                library: {
+                    type: 'video'
+                },
+                multiple: false
+            });
+            
+            frame.on('select', function() {
+                const attachment = frame.state().get('selection').first().toJSON();
+                $('#group_video').val(attachment.url);
+                updateVideoPreview();
+            });
+            
+            frame.open();
+        } else {
+            alert('کتابخانه رسانه وردپرس در دسترس نیست.');
+        }
+    }
+    
+    function updateVideoPreview() {
+        const videoUrl = $('#group_video').val();
+        const preview = $('#video-preview');
+        const videoSource = $('#video-source');
+        const videoInfo = $('#video-info');
+        
+        if (videoUrl) {
+            // بررسی نوع لینک
+            if (isAparatUrl(videoUrl)) {
+                // برای آپارات، لینک embed را ایجاد می‌کنیم
+                const embedUrl = convertAparatToEmbed(videoUrl);
+                videoSource.attr('src', embedUrl);
+                videoInfo.text('ویدیو آپارات: ' + videoUrl);
+            } else if (isDirectVideoUrl(videoUrl)) {
+                // برای ویدیو مستقیم
+                videoSource.attr('src', videoUrl);
+                videoInfo.text('ویدیو مستقیم: ' + videoUrl);
+            } else {
+                // لینک نامعتبر
+                videoInfo.text('لینک نامعتبر: ' + videoUrl);
+                videoSource.attr('src', '');
+            }
+            
+            preview.show();
+        } else {
+            preview.hide();
+        }
+    }
+    
+    function isAparatUrl(url) {
+        return url.includes('aparat.com') || url.includes('aparat.ir');
+    }
+    
+    function isDirectVideoUrl(url) {
+        const videoExtensions = ['.mp4', '.webm', '.ogg', '.avi', '.mov', '.wmv'];
+        return videoExtensions.some(ext => url.toLowerCase().includes(ext));
+    }
+    
+    function convertAparatToEmbed(url) {
+        // تبدیل لینک آپارات به embed
+        // مثال: https://www.aparat.com/v/ABC123 -> https://www.aparat.com/video/video/embed/videohash/ABC123
+        const match = url.match(/aparat\.com\/v\/([^\/\?]+)/);
+        if (match) {
+            return 'https://www.aparat.com/video/video/embed/videohash/' + match[1];
+        }
+        return url;
+    }
+    
 });
