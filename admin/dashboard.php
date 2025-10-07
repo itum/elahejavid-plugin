@@ -386,6 +386,31 @@ $recent_results = $wpdb->get_results("
             </div>
             
             <div class="oa-help-section">
+                <h4>🔄 شورت کدهای مدیریتی</h4>
+                
+                <div class="oa-shortcode-group">
+                    <h5>به‌روزرسانی سوالات</h5>
+                    <div class="oa-code-block">
+                        <code>[oa_update_questions]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[oa_update_questions]">کپی</button>
+                    </div>
+                    <p>این شورت کد سوالات موجود در دیتابیس را با نسخه جدید از کد seeder به‌روزرسانی می‌کند. فقط ادمین‌ها می‌توانند از آن استفاده کنند.</p>
+                    <div class="oa-warning-box">
+                        <strong>⚠️ هشدار:</strong> این شورت کد تمام سوالات و گزینه‌های موجود را حذف کرده و مجدداً از کد seeder درج می‌کند.
+                    </div>
+                </div>
+                
+                <div class="oa-shortcode-group">
+                    <h5>بازنشانی قوانین URL</h5>
+                    <div class="oa-code-block">
+                        <code>[oa_flush_rules]</code>
+                        <button class="oa-btn oa-btn-small oa-btn-secondary oa-copy-btn" data-copy="[oa_flush_rules]">کپی</button>
+                    </div>
+                    <p>این شورت کد قوانین URL وردپرس را بازنشانی می‌کند. در صورت مشکل در نمایش صفحات نتیجه استفاده کنید.</p>
+                </div>
+            </div>
+            
+            <div class="oa-help-section">
                 <h4>🔄 تفاوت بین دو حالت نمایش</h4>
                 
                 <div class="oa-comparison-grid">
