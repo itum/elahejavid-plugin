@@ -2,8 +2,8 @@
 /**
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
- * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف و مدیریت داینامیک سوالات
- * Version: 1.0.29
+ * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف، مدیریت داینامیک سوالات و هماهنگی کامل با Tutor LMS
+ * Version: 1.1.4
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -62,6 +62,12 @@ class ObesityAssessment {
         
         // بارگذاری AJAX handlers
         require_once OA_PLUGIN_PATH . 'admin/ajax-handlers.php';
+        
+        // بارگذاری هماهنگی با Tutor LMS
+        require_once OA_PLUGIN_PATH . 'includes/tutor-lms-integration.php';
+        
+        // بارگذاری فایل تست هماهنگی با Tutor LMS
+        require_once OA_PLUGIN_PATH . 'includes/tutor-lms-test.php';
         
         // تست AJAX ساده
         add_action('wp_ajax_oa_test', array($this, 'test_ajax'));
@@ -924,6 +930,12 @@ class ObesityAssessment {
             'group_scores' => $group_scores,
             'winning_groups' => $winning_groups
         );
+        
+        // اجرای اکشن برای هماهنگی با Tutor LMS
+        do_action('oa_quiz_completed', get_current_user_id(), array(
+            'group_scores' => $group_scores,
+            'winning_groups' => $winning_groups
+        ));
     }
     
     public function submit_quiz() {
@@ -1018,6 +1030,12 @@ class ObesityAssessment {
             'group_scores' => $group_scores,
             'winning_groups' => $winning_groups
         );
+        
+        // اجرای اکشن برای هماهنگی با Tutor LMS
+        do_action('oa_quiz_completed', get_current_user_id(), array(
+            'group_scores' => $group_scores,
+            'winning_groups' => $winning_groups
+        ));
         
         wp_send_json_success(array(
             'redirect_url' => home_url('/oa-result/')

@@ -1,0 +1,302 @@
+/**
+ * استایل‌های هماهنگی با Tutor LMS
+ * این فایل استایل‌های مخصوص نمایش آزمون در درس‌های Tutor LMS را شامل می‌شود
+ */
+
+/* استایل‌های کلی آزمون در Tutor LMS */
+.oa-tutor-quiz-section {
+    background: #ffffff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 20px 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.oa-tutor-quiz-section h3 {
+    color: #2c3e50;
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 10px;
+}
+
+/* سازگاری با تم Tutor LMS */
+.tutor-course-content .oa-tutor-quiz-section {
+    margin: 30px 0;
+}
+
+.tutor-course-content .oa-quiz-container {
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    padding: 0;
+}
+
+/* استایل‌های نتایج آزمون در پروفایل */
+.oa-quiz-results {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.oa-quiz-results h3 {
+    color: #2c3e50;
+    font-size: 22px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.oa-result-group {
+    background: #ffffff;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.oa-result-group h5 {
+    color: #3498db;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.oa-result-group p {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 10px;
+}
+
+.oa-result-group strong {
+    color: #2c3e50;
+}
+
+/* استایل‌های دکمه‌ها در Tutor LMS */
+.oa-tutor-quiz-section .oa-btn {
+    background: #3498db;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.oa-tutor-quiz-section .oa-btn:hover {
+    background: #2980b9;
+    transform: translateY(-2px);
+}
+
+.oa-tutor-quiz-section .oa-btn:disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* استایل‌های سوالات در Tutor LMS */
+.oa-tutor-quiz-section .oa-question {
+    background: #ffffff;
+    border: 1px solid #e1e5e9;
+    border-radius: 8px;
+    padding: 25px;
+    margin: 20px 0;
+}
+
+.oa-tutor-quiz-section .oa-question h3 {
+    color: #2c3e50;
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: right;
+    border-bottom: 1px solid #ecf0f1;
+    padding-bottom: 15px;
+}
+
+.oa-tutor-quiz-section .oa-options {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.oa-tutor-quiz-section .oa-option {
+    background: #f8f9fa;
+    border: 1px solid #e1e5e9;
+    border-radius: 6px;
+    margin: 10px 0;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.oa-tutor-quiz-section .oa-option:hover {
+    background: #e8f4f8;
+    border-color: #3498db;
+}
+
+.oa-tutor-quiz-section .oa-option input[type="radio"] {
+    margin-left: 10px;
+    transform: scale(1.2);
+}
+
+.oa-tutor-quiz-section .oa-option label {
+    cursor: pointer;
+    font-size: 16px;
+    color: #2c3e50;
+    margin: 0;
+}
+
+/* استایل‌های پیشرفت در Tutor LMS */
+.oa-tutor-quiz-section .oa-progress {
+    background: #ecf0f1;
+    border-radius: 10px;
+    height: 20px;
+    margin: 20px 0;
+    overflow: hidden;
+}
+
+.oa-tutor-quiz-section .oa-progress-bar {
+    background: #ecf0f1;
+    height: 100%;
+    border-radius: 10px;
+    position: relative;
+}
+
+.oa-tutor-quiz-section .oa-progress-fill {
+    background: linear-gradient(90deg, #3498db, #2980b9);
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+    width: 0%;
+}
+
+.oa-tutor-quiz-section .oa-progress-text {
+    text-align: center;
+    margin-top: 10px;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+/* استایل‌های ناوبری در Tutor LMS */
+.oa-tutor-quiz-section .oa-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #ecf0f1;
+}
+
+.oa-tutor-quiz-section .oa-btn-prev {
+    background: #95a5a6;
+}
+
+.oa-tutor-quiz-section .oa-btn-prev:hover {
+    background: #7f8c8d;
+}
+
+.oa-tutor-quiz-section .oa-submit-btn {
+    background: #27ae60;
+}
+
+.oa-tutor-quiz-section .oa-submit-btn:hover {
+    background: #229954;
+}
+
+/* استایل‌های ریسپانسیو برای موبایل */
+@media (max-width: 768px) {
+    .oa-tutor-quiz-section {
+        padding: 15px;
+        margin: 15px 0;
+    }
+    
+    .oa-tutor-quiz-section h3 {
+        font-size: 20px;
+    }
+    
+    .oa-tutor-quiz-section .oa-question {
+        padding: 20px;
+    }
+    
+    .oa-tutor-quiz-section .oa-question h3 {
+        font-size: 18px;
+    }
+    
+    .oa-tutor-quiz-section .oa-navigation {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .oa-tutor-quiz-section .oa-btn {
+        width: 100%;
+        padding: 15px;
+    }
+}
+
+/* استایل‌های مخصوص حالت تاریک */
+@media (prefers-color-scheme: dark) {
+    .oa-tutor-quiz-section {
+        background: #2c3e50;
+        border-color: #34495e;
+        color: #ecf0f1;
+    }
+    
+    .oa-tutor-quiz-section h3 {
+        color: #ecf0f1;
+        border-bottom-color: #3498db;
+    }
+    
+    .oa-tutor-quiz-section .oa-question {
+        background: #34495e;
+        border-color: #2c3e50;
+    }
+    
+    .oa-tutor-quiz-section .oa-question h3 {
+        color: #ecf0f1;
+        border-bottom-color: #34495e;
+    }
+    
+    .oa-tutor-quiz-section .oa-option {
+        background: #2c3e50;
+        border-color: #34495e;
+        color: #ecf0f1;
+    }
+    
+    .oa-tutor-quiz-section .oa-option:hover {
+        background: #34495e;
+        border-color: #3498db;
+    }
+    
+    .oa-tutor-quiz-section .oa-option label {
+        color: #ecf0f1;
+    }
+    
+    .oa-quiz-results {
+        background: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .oa-quiz-results h3 {
+        color: #ecf0f1;
+    }
+    
+    .oa-result-group {
+        background: #34495e;
+        border-color: #2c3e50;
+        color: #ecf0f1;
+    }
+    
+    .oa-result-group h5 {
+        color: #3498db;
+    }
+    
+    .oa-result-group p {
+        color: #bdc3c7;
+    }
+    
+    .oa-result-group strong {
+        color: #ecf0f1;
+    }
+}
