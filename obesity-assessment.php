@@ -3,7 +3,7 @@
  * Plugin Name: تست تشخیص نوع چاقی
  * Plugin URI: https://elahejavid.ir
  * Description: افزونه تست تشخیص نوع چاقی با 9 گروه مختلف، مدیریت داینامیک سوالات و هماهنگی کامل با Tutor LMS
- * Version: 1.1.4
+ * Version: 1.1.6
  * Author: منصور شوکت
  * Text Domain: obesity-assessment
  * Domain Path: /languages
@@ -59,6 +59,14 @@ class ObesityAssessment {
         // پردازش فرم
         add_action('wp_ajax_oa_submit_quiz', array($this, 'submit_quiz'));
         add_action('wp_ajax_nopriv_oa_submit_quiz', array($this, 'submit_quiz'));
+        
+        // پردازش فرم Tutor LMS
+        add_action('wp_ajax_oa_submit_tutor_quiz', array($this, 'submit_tutor_quiz'));
+        add_action('wp_ajax_nopriv_oa_submit_tutor_quiz', array($this, 'submit_tutor_quiz'));
+        
+        // پاک کردن نتایج
+        add_action('wp_ajax_oa_clear_quiz_results', array($this, 'clear_quiz_results'));
+        add_action('wp_ajax_nopriv_oa_clear_quiz_results', array($this, 'clear_quiz_results'));
         
         // بارگذاری AJAX handlers
         require_once OA_PLUGIN_PATH . 'admin/ajax-handlers.php';
@@ -1042,6 +1050,165 @@ class ObesityAssessment {
         ));
     }
     
+    public function submit_tutor_quiz() {
+        check_ajax_referer('oa_quiz_nonce', 'nonce');
+        
+        global $wpdb;
+        
+        $answers = $_POST['answers'];
+        
+        // بررسی وجود پاسخ‌ها
+        if (empty($answers) || !is_array($answers)) {
+            wp_send_json_error(array('message' => 'هیچ پاسخی دریافت نشد. لطفاً دوباره تلاش کنید.'));
+            return;
+        }
+        
+        // بررسی تعداد پاسخ‌ها
+        $total_questions = $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->prefix}oa_questions");
+        if (count($answers) < $total_questions) {
+            wp_send_json_error(array('message' => 'لطفاً به همه سوالات پاسخ دهید. تعداد پاسخ‌های دریافتی: ' . count($answers) . ' از ' . $total_questions));
+            return;
+        }
+        
+        $group_scores = array();
+        
+        // محاسبه امتیاز هر گروه
+        for ($group_id = 1; $group_id <= 9; $group_id++) {
+            $group_score = 0;
+            
+            // دریافت سوالات این گروه
+            $group_questions = $wpdb->get_results($wpdb->prepare("
+                SELECT id FROM {$wpdb->prefix}oa_questions 
+                WHERE group_id = %d 
+                ORDER BY display_order
+            ", $group_id));
+            
+            foreach ($group_questions as $question) {
+                if (isset($answers[$question->id])) {
+                    $option_index = intval($answers[$question->id]);
+                    // دریافت امتیاز گزینه انتخاب شده
+                    $option_score = $wpdb->get_var($wpdb->prepare("
+                        SELECT score FROM {$wpdb->prefix}oa_options 
+                        WHERE question_id = %d AND display_order = %d
+                    ", $question->id, $option_index + 1));
+                    
+                    if ($option_score !== null) {
+                        $group_score += intval($option_score);
+                    }
+                }
+            }
+            $group_scores[$group_id] = $group_score;
+        }
+        
+        // پیدا کردن گروه‌های برنده
+        $winning_groups = array();
+        $max_score = max($group_scores);
+        
+        if ($max_score == 12) {
+            // گروه‌هایی که امتیاز کامل دارند
+            foreach ($group_scores as $group_id => $score) {
+                if ($score == 12) {
+                    $winning_groups[] = $group_id;
+                }
+            }
+        } else {
+            // گروه‌هایی که بیشترین امتیاز را دارند
+            foreach ($group_scores as $group_id => $score) {
+                if ($score == $max_score) {
+                    $winning_groups[] = $group_id;
+                }
+            }
+        }
+        
+        // دریافت اطلاعات گروه‌های برنده
+        $winning_groups_info = array();
+        $group_names = array();
+        
+        foreach ($winning_groups as $group_id) {
+            $group = $wpdb->get_row($wpdb->prepare("
+                SELECT * FROM {$wpdb->prefix}oa_groups 
+                WHERE id = %d
+            ", $group_id));
+            
+            if ($group) {
+                $winning_groups_info[] = array(
+                    'id' => $group->id,
+                    'name' => $group->name,
+                    'description' => $group->description,
+                    'tips' => $group->tips,
+                    'video_url' => $group->video_url
+                );
+            }
+        }
+        
+        // دریافت نام همه گروه‌ها برای نمایش امتیازات
+        $all_groups = $wpdb->get_results("SELECT id, name FROM {$wpdb->prefix}oa_groups ORDER BY display_order");
+        foreach ($all_groups as $group) {
+            $group_names[$group->id] = $group->name;
+        }
+        
+        // ذخیره نتیجه
+        $session_id = session_id();
+        if (empty($session_id)) {
+            session_start();
+            $session_id = session_id();
+        }
+        
+        $wpdb->insert(
+            $wpdb->prefix . 'oa_results',
+            array(
+                'user_id' => get_current_user_id(),
+                'session_id' => $session_id,
+                'group_scores' => json_encode($group_scores),
+                'winning_groups' => json_encode($winning_groups)
+            )
+        );
+        
+        // ذخیره در session
+        $_SESSION['oa_result'] = array(
+            'group_scores' => $group_scores,
+            'winning_groups' => $winning_groups
+        );
+        
+        // اجرای اکشن برای هماهنگی با Tutor LMS
+        do_action('oa_quiz_completed', get_current_user_id(), array(
+            'group_scores' => $group_scores,
+            'winning_groups' => $winning_groups
+        ));
+        
+        // بازگرداندن نتایج برای نمایش در همان صفحه
+        wp_send_json_success(array(
+            'group_scores' => $group_scores,
+            'winning_groups' => $winning_groups_info,
+            'group_names' => $group_names,
+            'total_score' => array_sum($group_scores)
+        ));
+    }
+    
+    public function clear_quiz_results() {
+        check_ajax_referer('oa_quiz_nonce', 'nonce');
+        
+        global $wpdb;
+        
+        $user_id = get_current_user_id();
+        $session_id = session_id();
+        
+        // پاک کردن نتایج از دیتابیس
+        $wpdb->query($wpdb->prepare("
+            DELETE FROM {$wpdb->prefix}oa_results 
+            WHERE user_id = %d OR session_id = %s
+        ", $user_id, $session_id));
+        
+        // پاک کردن نتایج از session
+        if (isset($_SESSION['oa_result'])) {
+            unset($_SESSION['oa_result']);
+        }
+        
+        wp_send_json_success(array(
+            'message' => 'نتایج با موفقیت پاک شدند'
+        ));
+    }
+    
     // تست AJAX
     public function test_ajax() {
         wp_send_json_success(array(
@@ -1077,6 +1244,7 @@ class ObesityAssessment {
         $this->update_questions_from_seeder();
         return '<p style="color: green;">سوالات با موفقیت به‌روزرسانی شدند!</p>';
     }
+    
 }
 
 // راه‌اندازی افزونه

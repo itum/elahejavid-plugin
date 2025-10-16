@@ -182,15 +182,14 @@ $total_score = array_sum($result['group_scores']);
 </div>
 
 <style>
-/* فونت ایران‌سنس */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* استفاده از فونت‌های قالب اصلی سایت */
 
 /* استایل‌های بهبود یافته برای صفحه نتیجه */
 .oa-result-container {
     min-height: 100vh;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     padding: 30px 15px;
-    font-family: 'Inter', 'Arial', sans-serif;
+    /* فونت از قالب اصلی سایت ارث‌بری می‌شود */
     direction: rtl;
     text-align: right;
 }

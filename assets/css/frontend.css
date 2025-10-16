@@ -1,5 +1,4 @@
-/* فونت ایران‌سنس */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+/* استفاده از فونت‌های قالب اصلی سایت */
 
 /* استایل پیام نیاز به ورود */
 .oa-login-required {
@@ -26,7 +25,7 @@
 .oa-quiz-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Inter', 'Arial', sans-serif;
+    /* فونت از قالب اصلی سایت ارث‌بری می‌شود */
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
@@ -259,7 +258,7 @@
 .oa-result-container {
     direction: rtl;
     text-align: right;
-    font-family: 'Inter', 'Arial', sans-serif;
+    /* فونت از قالب اصلی سایت ارث‌بری می‌شود */
     max-width: 900px;
     margin: 0 auto;
     padding: 20px;

@@ -40,6 +40,11 @@ jQuery(document).ready(function($) {
             trackQuizCompletion();
         });
         
+        // رویداد تکمیل آزمون جدید
+        $(document).on('click', '.oa-tutor-submit-btn', function() {
+            trackQuizCompletion();
+        });
+        
         // رویداد تغییر سوال
         $(document).on('click', '.oa-tutor-quiz-section .oa-btn-next', function() {
             trackQuestionChange();
